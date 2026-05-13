@@ -29,7 +29,6 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
 
-/* LAYOUT */
 .app { display: flex; flex-direction: column; height: 100%; }
 .topbar {
   padding: calc(var(--safe-top) + 12px) 20px 14px;
@@ -41,15 +40,15 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .topbar h1 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
 .topbar h1 span { color: var(--accent); }
 .top-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
-.week-pill {
-  background: var(--bg3); border-radius: 99px; padding: 6px 12px; font-size: 12px;
-  color: var(--muted); border: 1px solid var(--border);
-}
+.week-pill { background: var(--bg3); border-radius: 99px; padding: 6px 12px; font-size: 12px; color: var(--muted); border: 1px solid var(--border); }
 .week-pill b { color: var(--accent); font-weight: 600; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); display: inline-block; margin-right: 5px; transition: background .3s; }
+.sync-dot.online { background: var(--accent2); }
+.sync-dot.syncing { background: #F0B44A; animation: pulse .8s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
 
 .content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 16px 16px calc(var(--nav-h) + var(--safe-bottom) + 16px); }
 
-/* BOTTOM NAV */
 .nav {
   position: fixed; bottom: 0; left: 0; right: 0;
   height: calc(var(--nav-h) + var(--safe-bottom));
@@ -58,82 +57,43 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
   display: flex; align-items: flex-start; justify-content: space-around;
-  padding-top: 10px;
-  z-index: 100;
+  padding-top: 10px; z-index: 100;
 }
 .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 4px; background: none; border: none; cursor: pointer; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 10px; padding: 0 20px; transition: color .2s; }
 .nav-btn.active { color: var(--accent); }
 .nav-icon { font-size: 22px; line-height: 1; }
 
-/* SECTIONS */
-.section { display: none; }
-.section.active { display: block; }
+.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 18px; padding: 16px; margin-bottom: 12px; }
 
-/* CARDS */
-.card {
-  background: var(--bg2); border: 1px solid var(--border); border-radius: 18px;
-  padding: 16px; margin-bottom: 12px;
-}
-
-/* PROGRESS BAR */
 .prog-wrap { margin-bottom: 14px; }
 .prog-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 .prog-label b { color: var(--accent); font-weight: 600; font-size: 13px; }
 .prog-bg { height: 6px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
 .prog-fill { height: 6px; background: linear-gradient(90deg, var(--accent2), var(--accent)); border-radius: 99px; transition: width .5s cubic-bezier(.4,0,.2,1); }
 
-/* ADD FORM */
 .add-form { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
 .add-row { display: flex; gap: 8px; }
-.inp {
-  flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px;
-  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 14px;
-  outline: none; transition: border-color .2s;
-}
+.inp { flex: 1; background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; padding: 11px 14px; outline: none; transition: border-color .2s; }
 .inp:focus { border-color: var(--accent); }
 .sel { appearance: none; -webkit-appearance: none; background-image: none; }
-.btn {
-  background: var(--accent); color: #0F0F0D; border: none; border-radius: 12px; padding: 11px 18px;
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer;
-  white-space: nowrap; transition: opacity .15s;
-}
+.btn { background: var(--accent); color: #0F0F0D; border: none; border-radius: 12px; padding: 11px 18px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; white-space: nowrap; transition: opacity .15s; }
 .btn:active { opacity: .7; }
-.btn-ghost {
-  background: var(--bg3); color: var(--text); border: 1px solid var(--border);
-}
-.btn-sm { padding: 7px 12px; font-size: 12px; border-radius: 8px; }
 
-/* FILTERS */
 .filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; margin-bottom: 12px; scrollbar-width: none; }
 .filters::-webkit-scrollbar { display: none; }
-.filter-pill {
-  flex-shrink: 0; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px;
-  color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 12px;
-  cursor: pointer; white-space: nowrap; transition: all .15s;
-}
+.filter-pill { flex-shrink: 0; background: var(--bg3); border: 1px solid var(--border); border-radius: 99px; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 12px; padding: 5px 12px; cursor: pointer; white-space: nowrap; transition: all .15s; }
 .filter-pill.active { background: var(--accent); color: #0F0F0D; border-color: var(--accent); font-weight: 600; }
 
-/* TASK ITEMS */
 .task-list { display: flex; flex-direction: column; gap: 8px; }
-.task-item {
-  background: var(--bg3); border: 1px solid var(--border); border-radius: 14px;
-  padding: 12px 14px; display: flex; align-items: center; gap: 12px;
-  transition: opacity .2s;
-}
+.task-item { background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; transition: opacity .2s; }
 .task-item.done-item { opacity: .5; }
-.check-btn {
-  width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border);
-  background: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all .2s; font-size: 13px;
-}
+.check-btn { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .2s; font-size: 13px; }
 .check-btn.checked { background: var(--accent2); border-color: var(--accent2); }
 .task-body { flex: 1; min-width: 0; }
 .task-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .task-name.striked { text-decoration: line-through; color: var(--muted); }
 .task-meta { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-.chip {
-  font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px;
-}
+.chip { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }
 .chip-high { background: rgba(240,74,74,.18); color: #F08A8A; }
 .chip-med { background: rgba(240,159,39,.18); color: #F0B96A; }
 .chip-low { background: rgba(74,240,180,.18); color: var(--accent2); }
@@ -145,17 +105,12 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .empty-state { text-align: center; padding: 40px 0; color: var(--muted); font-size: 14px; }
 .empty-icon { font-size: 36px; margin-bottom: 10px; }
 
-/* RANK LEGEND GRID */
 .rank-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
-.rank-card {
-  border-radius: 14px; border: 1px solid var(--border); padding: 10px 6px; text-align: center;
-  background: var(--bg2);
-}
+.rank-card { border-radius: 14px; border: 1px solid var(--border); padding: 10px 6px; text-align: center; background: var(--bg2); }
 .rank-icon { font-size: 22px; margin-bottom: 4px; }
 .rank-name { font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700; }
 .rank-req { font-size: 9px; color: var(--muted); margin-top: 2px; }
 
-/* LEADERBOARD */
 .lb-list { display: flex; flex-direction: column; gap: 10px; }
 .lb-item { display: flex; align-items: center; gap: 12px; }
 .lb-pos { width: 28px; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted); text-align: center; flex-shrink: 0; }
@@ -169,67 +124,75 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .lb-stats { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
 .lb-pts { color: var(--accent); font-weight: 600; }
 
-/* MEMBERS */
 .member-card { display: flex; align-items: center; gap: 12px; }
 .member-info { flex: 1; }
-.member-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.member-name-txt { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
 .member-sub { font-size: 11px; color: var(--muted); }
 
-/* TOAST */
-.toast {
-  position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px); left: 50%; transform: translateX(-50%) translateY(20px);
-  background: var(--accent); color: #0F0F0D; font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 13px; padding: 10px 20px; border-radius: 99px; white-space: nowrap;
-  opacity: 0; transition: all .3s cubic-bezier(.4,0,.2,1); pointer-events: none; z-index: 200;
-}
+.toast { position: fixed; bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: var(--accent); color: #0F0F0D; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; padding: 10px 20px; border-radius: 99px; white-space: nowrap; opacity: 0; transition: all .3s cubic-bezier(.4,0,.2,1); pointer-events: none; z-index: 200; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* INSTALL BANNER */
-.install-banner {
-  background: linear-gradient(135deg, var(--bg2), var(--bg3));
-  border: 1px solid var(--accent);
-  border-radius: 16px; padding: 14px 16px; margin-bottom: 12px;
-  display: flex; gap: 12px; align-items: flex-start;
-}
+.install-banner { background: linear-gradient(135deg, var(--bg2), var(--bg3)); border: 1px solid var(--accent); border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; display: flex; gap: 12px; align-items: flex-start; }
 .install-icon { font-size: 28px; flex-shrink: 0; }
 .install-text { flex: 1; }
 .install-text b { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); }
 .install-text p { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
 .install-close { background: none; border: none; color: var(--muted); font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
-
 .divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+/* Loading screen */
+.loading-screen { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 999; transition: opacity .4s; }
+.loading-screen.hidden { opacity: 0; pointer-events: none; }
+.loading-logo { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; margin-bottom: 12px; }
+.loading-logo span { color: var(--accent); }
+.loading-bar-bg { width: 120px; height: 3px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+.loading-bar { height: 3px; background: var(--accent); border-radius: 99px; animation: load 1.5s ease-in-out infinite; }
+@keyframes load { 0%{width:0%} 60%{width:100%} 100%{width:100%} }
 </style>
 </head>
 <body>
+
+<!-- Loading screen -->
+<div class="loading-screen" id="loading">
+  <div class="loading-logo">Coloc<span>Tasks</span></div>
+  <div class="loading-bar-bg"><div class="loading-bar"></div></div>
+</div>
+
 <div class="app">
   <div class="topbar">
     <div>
       <h1>Coloc<span>Tasks</span></h1>
-      <div class="top-sub" id="top-sub">Chargement…</div>
+      <div class="top-sub"><span class="sync-dot" id="sync-dot"></span><span id="sync-label">Connexion…</span></div>
     </div>
     <div class="week-pill" id="week-prog">0/<b>0</b></div>
   </div>
-
-  <div class="content" id="main-content">
-    <!-- Sections rendered by JS -->
-  </div>
-
+  <div class="content" id="main-content"></div>
   <nav class="nav">
-    <button class="nav-btn active" onclick="showTab('tasks')" id="nav-tasks">
-      <span class="nav-icon">✅</span><span>Tâches</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('ranking')" id="nav-ranking">
-      <span class="nav-icon">🏆</span><span>Classement</span>
-    </button>
-    <button class="nav-btn" onclick="showTab('members')" id="nav-members">
-      <span class="nav-icon">👥</span><span>Membres</span>
-    </button>
+    <button class="nav-btn active" onclick="showTab('tasks')" id="nav-tasks"><span class="nav-icon">✅</span><span>Tâches</span></button>
+    <button class="nav-btn" onclick="showTab('ranking')" id="nav-ranking"><span class="nav-icon">🏆</span><span>Classement</span></button>
+    <button class="nav-btn" onclick="showTab('members')" id="nav-members"><span class="nav-icon">👥</span><span>Membres</span></button>
   </nav>
-
   <div class="toast" id="toast"></div>
 </div>
 
-<script>
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, push, remove, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCuEW_DoAZhROZAwtLzX4hxJ1yGqFnFouM",
+  authDomain: "coloctasks.firebaseapp.com",
+  databaseURL: "https://coloctasks-default-rtdb.firebaseio.com",
+  projectId: "coloctasks",
+  storageBucket: "coloctasks.firebasestorage.app",
+  messagingSenderId: "287788066696",
+  appId: "1:287788066696:web:dd41aaa688a1e1f932fc3d"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
 // ─── RANKS ───────────────────────────────────────────────
 const RANKS = [
   { name:'Fer',          icon:'⚙️',  min:0,   max:14,  barColor:'#888780', bg:'rgba(136,135,128,.15)', textColor:'#B8B6AF' },
@@ -241,291 +204,48 @@ const RANKS = [
   { name:'Maître',       icon:'⚡',  min:225, max:349, barColor:'#A080FF', bg:'rgba(160,128,255,.18)', textColor:'#C0A8FF' },
   { name:'Grand Maître', icon:'👑',  min:350, max:Infinity, barColor:'#F0A040', bg:'rgba(240,160,64,.2)', textColor:'#FFD080' },
 ];
-const AVATARBG = ['#2D3A1F','#1A2D35','#35271A','#2D1A35','#1A2D2D','#35201A'];
+const AVATARBG  = ['#2D3A1F','#1A2D35','#35271A','#2D1A35','#1A2D2D','#35201A'];
 const AVATARTXT = ['#C8F04A','#4AF0E0','#F0B44A','#D44AF0','#4AF4A4','#F06A4A'];
 
 function getRank(pts){ for(let i=RANKS.length-1;i>=0;i--){ if(pts>=RANKS[i].min) return RANKS[i]; } return RANKS[0]; }
 function getNext(pts){ for(let i=0;i<RANKS.length;i++){ if(pts<RANKS[i].min) return RANKS[i]; } return null; }
 
-// ─── STATE ───────────────────────────────────────────────
-let S = {
-  members: [{id:1,name:'Alice',pts:0},{id:2,name:'Bob',pts:0}],
-  tasks: [
-    {id:1,name:'Faire la vaisselle',cat:'Cuisine',prio:'high',pts:10,done:false,assignedTo:null},
-    {id:2,name:'Passer l\'aspirateur',cat:'Salon',prio:'med',pts:20,done:false,assignedTo:null},
-    {id:3,name:'Sortir les poubelles',cat:'Poubelles',prio:'high',pts:10,done:false,assignedTo:null},
-  ],
-  nextTaskId:4, nextMemberId:3, filter:'all', tab:'tasks', installDismissed:false
-};
+// ─── STATE (local mirror of Firebase) ────────────────────
+let S = { members:{}, tasks:{}, tab:'tasks', filter:'all', installDismissed:false };
 
-function save(){ try{ localStorage.setItem('ct3', JSON.stringify(S)); }catch(e){} }
-function load(){ try{ const d=localStorage.getItem('ct3'); if(d) S=JSON.parse(d); }catch(e){} }
-load();
+// ─── SYNC STATUS ─────────────────────────────────────────
+function setSyncStatus(status){
+  const dot=document.getElementById('sync-dot');
+  const lbl=document.getElementById('sync-label');
+  if(!dot||!lbl) return;
+  dot.className='sync-dot';
+  if(status==='online'){ dot.classList.add('online'); lbl.textContent='Synchronisé ✓'; }
+  else if(status==='syncing'){ dot.classList.add('syncing'); lbl.textContent='Synchronisation…'; }
+  else { lbl.textContent='Hors ligne'; }
+}
+
+// ─── FIREBASE LISTENERS ──────────────────────────────────
+let firstLoad = true;
+onValue(ref(db,'coloctasks'), snapshot => {
+  const data = snapshot.val() || {};
+  S.members = data.members || {};
+  S.tasks   = data.tasks   || {};
+  setSyncStatus('online');
+  if(firstLoad){
+    firstLoad=false;
+    document.getElementById('loading').classList.add('hidden');
+  }
+  render();
+}, err => {
+  setSyncStatus('offline');
+  document.getElementById('loading').classList.add('hidden');
+});
 
 // ─── UTILS ───────────────────────────────────────────────
 function initials(n){ return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2); }
+function membersArray(){ return Object.entries(S.members).map(([id,m])=>({...m,id})); }
+function tasksArray(){   return Object.entries(S.tasks).map(([id,t])=>({...t,id})); }
 function avBg(idx){ return AVATARBG[idx%AVATARBG.length]; }
 function avTxt(idx){ return AVATARTXT[idx%AVATARTXT.length]; }
-function mIdx(id){ return S.members.findIndex(m=>m.id===id); }
 
 function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2200);
-}
-
-// ─── TOPBAR ──────────────────────────────────────────────
-function updateTopbar(){
-  const done=S.tasks.filter(t=>t.done).length;
-  const total=S.tasks.length;
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('top-sub').textContent=`${pct}% des tâches complétées`;
-  document.getElementById('week-prog').innerHTML=`${done}/<b>${total}</b>`;
-}
-
-// ─── TABS ─────────────────────────────────────────────────
-function showTab(tab){
-  S.tab=tab;
-  ['tasks','ranking','members'].forEach(t=>{
-    document.getElementById('nav-'+t).classList.toggle('active',t===tab);
-  });
-  render();
-}
-
-// ─── ACTIONS ─────────────────────────────────────────────
-function addTask(){
-  const inp=document.getElementById('ti');
-  const name=inp.value.trim();
-  if(!name) return;
-  S.tasks.push({
-    id:S.nextTaskId++, name,
-    cat:document.getElementById('tc').value,
-    prio:document.getElementById('tp').value,
-    pts:parseInt(document.getElementById('tpts').value),
-    done:false, assignedTo:null
-  });
-  inp.value=''; save(); render(); toast('Tâche ajoutée ! ✅');
-}
-
-function toggleTask(id){
-  const t=S.tasks.find(t=>t.id===id); if(!t) return;
-  const was=t.done; t.done=!t.done;
-  if(t.assignedTo){
-    const m=S.members.find(m=>m.id===t.assignedTo);
-    if(m){
-      const prev=getRank(m.pts).name;
-      if(!was){ m.pts+=t.pts; } else { m.pts=Math.max(0,m.pts-t.pts); }
-      const cur=getRank(m.pts).name;
-      if(!was && cur!==prev){ toast(`${getRank(m.pts).icon} ${m.name} atteint ${cur} !`); }
-      else if(!was){ toast(`+${t.pts} pts pour ${m.name} !`); }
-    }
-  }
-  save(); render();
-}
-
-function delTask(id){ S.tasks=S.tasks.filter(t=>t.id!==id); save(); render(); }
-
-function assignTask(taskId, val){
-  const t=S.tasks.find(t=>t.id===taskId); if(!t) return;
-  if(t.done && t.assignedTo){ const old=S.members.find(m=>m.id===t.assignedTo); if(old) old.pts=Math.max(0,old.pts-t.pts); }
-  t.assignedTo=val?parseInt(val):null;
-  if(t.done && t.assignedTo){ const m=S.members.find(m=>m.id===t.assignedTo); if(m) m.pts+=t.pts; }
-  save(); render();
-}
-
-function addMember(){
-  const inp=document.getElementById('mi');
-  const name=inp.value.trim(); if(!name) return;
-  S.members.push({id:S.nextMemberId++,name,pts:0});
-  inp.value=''; save(); render(); toast(`${name} a rejoint la coloc ! 🎉`);
-}
-
-function delMember(id){
-  S.members=S.members.filter(m=>m.id!==id);
-  S.tasks.forEach(t=>{ if(t.assignedTo===id) t.assignedTo=null; });
-  save(); render();
-}
-
-function setFilter(f){ S.filter=f; render(); }
-
-// ─── RENDER ──────────────────────────────────────────────
-function render(){
-  updateTopbar();
-  const el=document.getElementById('main-content');
-  if(S.tab==='tasks')   el.innerHTML=renderTasks();
-  if(S.tab==='ranking') el.innerHTML=renderRanking();
-  if(S.tab==='members') el.innerHTML=renderMembers();
-}
-
-function renderTasks(){
-  // Progress bar
-  const done=S.tasks.filter(t=>t.done).length, total=S.tasks.length;
-  const pct=total?Math.round(done/total*100):0;
-  const prog=`<div class="prog-wrap">
-    <div class="prog-label"><span>Progression</span><b>${pct}%</b></div>
-    <div class="prog-bg"><div class="prog-fill" style="width:${pct}%"></div></div>
-  </div>`;
-
-  // Install banner
-  let banner='';
-  if(!S.installDismissed && !window.matchMedia('(display-mode: standalone)').matches){
-    banner=`<div class="install-banner">
-      <div class="install-icon">📲</div>
-      <div class="install-text"><b>Installer l'app</b><p>Dans Safari : appuye sur <b>Partager</b> puis <b>"Sur l'écran d'accueil"</b></p></div>
-      <button class="install-close" onclick="dismissInstall()">✕</button>
-    </div>`;
-  }
-
-  // Add form
-  const memberOpts=S.members.length
-    ? S.members.map(m=>`<option value="${m.id}">${initials(m.name)} ${m.name}</option>`).join('')
-    : '<option>— aucun membre —</option>';
-
-  const form=`<div class="card">
-    <div class="add-form">
-      <input class="inp" id="ti" placeholder="Nouvelle tâche…" type="text" onkeydown="if(event.key==='Enter')addTask()"/>
-      <div class="add-row">
-        <select class="inp sel" id="tc" style="flex:1">
-          <option value="Cuisine">🍽 Cuisine</option>
-          <option value="Salle de bain">🚿 Salle de bain</option>
-          <option value="Salon">🛋 Salon</option>
-          <option value="Poubelles">🗑 Poubelles</option>
-          <option value="Courses">🛒 Courses</option>
-          <option value="Autre">📦 Autre</option>
-        </select>
-        <select class="inp sel" id="tp" style="flex:1">
-          <option value="high">🔴 Urgent</option>
-          <option value="med">🟡 Normal</option>
-          <option value="low">🟢 Léger</option>
-        </select>
-      </div>
-      <div class="add-row">
-        <select class="inp sel" id="tpts" style="flex:1">
-          <option value="5">5 pts</option>
-          <option value="10" selected>10 pts</option>
-          <option value="20">20 pts</option>
-          <option value="30">30 pts</option>
-        </select>
-        <button class="btn" onclick="addTask()" style="flex:1">+ Ajouter</button>
-      </div>
-    </div>
-  </div>`;
-
-  // Filters
-  const cats=['all','pending','done','Cuisine','Salle de bain','Poubelles','Salon','Courses'];
-  const labels={all:'Tout',pending:'À faire',done:'Faites',Cuisine:'Cuisine','Salle de bain':'Salle de bain',Poubelles:'Poubelles',Salon:'Salon',Courses:'Courses'};
-  const filters=`<div class="filters">${cats.map(c=>`<button class="filter-pill${S.filter===c?' active':''}" onclick="setFilter('${c}')">${labels[c]}</button>`).join('')}</div>`;
-
-  // Task list
-  let tasks=[...S.tasks];
-  if(S.filter==='pending') tasks=tasks.filter(t=>!t.done);
-  else if(S.filter==='done') tasks=tasks.filter(t=>t.done);
-  else if(S.filter!=='all') tasks=tasks.filter(t=>t.cat===S.filter);
-
-  const taskHTML = tasks.length ? tasks.map(t=>{
-    const prioClass={high:'chip-high',med:'chip-med',low:'chip-low'}[t.prio];
-    const prioLabel={high:'Urgent',med:'Normal',low:'Léger'}[t.prio];
-    const mopts=`<option value="">Assigner…</option>`+S.members.map(m=>`<option value="${m.id}"${t.assignedTo===m.id?' selected':''}>${m.name}</option>`).join('');
-    return `<div class="task-item${t.done?' done-item':''}">
-      <button class="check-btn${t.done?' checked':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</button>
-      <div class="task-body">
-        <div class="task-name${t.done?' striked':''}">${t.name}</div>
-        <div class="task-meta">
-          <span class="chip chip-cat">${t.cat}</span>
-          <span class="chip ${prioClass}">${prioLabel}</span>
-          <span class="chip chip-pts">+${t.pts} pts</span>
-        </div>
-      </div>
-      <div class="task-right">
-        <button class="del-btn" onclick="delTask(${t.id})">🗑</button>
-        <select class="assign-sel" onchange="assignTask(${t.id},this.value)">${mopts}</select>
-      </div>
-    </div>`;
-  }).join('') : `<div class="empty-state"><div class="empty-icon">🎉</div>Aucune tâche ici !</div>`;
-
-  return banner + prog + form + filters + `<div class="task-list">${taskHTML}</div>`;
-}
-
-function renderRanking(){
-  // Legend grid
-  const legend=`<div class="rank-grid">${RANKS.map(r=>`
-    <div class="rank-card" style="border-color:${r.barColor}22">
-      <div class="rank-icon">${r.icon}</div>
-      <div class="rank-name" style="color:${r.textColor}">${r.name}</div>
-      <div class="rank-req">${r.min}${r.max===Infinity?'+ pts':' – '+r.max+' pts'}</div>
-    </div>`).join('')}
-  </div>`;
-
-  const sorted=[...S.members].sort((a,b)=>b.pts-a.pts);
-  const maxPts=Math.max(...sorted.map(m=>m.pts),1);
-  const medals=['🥇','🥈','🥉'];
-
-  if(!sorted.length) return legend+`<div class="card"><div class="empty-state"><div class="empty-icon">👥</div>Ajoute des membres !</div></div>`;
-
-  const lbHTML=sorted.map((m,i)=>{
-    const rank=getRank(m.pts);
-    const next=getNext(m.pts);
-    const idx=mIdx(m.id);
-    const pct=Math.round(m.pts/maxPts*100);
-    const nextTxt=next?`${next.min-m.pts} pts → ${next.icon} ${next.name}`:'👑 Rang maximum !';
-    return `<div class="lb-item">
-      <div class="lb-pos">${i<3?medals[i]:`${i+1}`}</div>
-      <div class="avatar" style="background:${avBg(idx)};color:${avTxt(idx)}">${initials(m.name)}</div>
-      <div class="lb-info">
-        <div class="lb-name-row">
-          <span class="lb-name">${m.name}</span>
-          <span class="rank-badge" style="background:${rank.bg};color:${rank.textColor}">${rank.icon} ${rank.name}</span>
-        </div>
-        <div class="lb-bar-bg"><div class="lb-bar" style="width:${pct}%;background:${rank.barColor}"></div></div>
-        <div class="lb-stats"><span>${nextTxt}</span><span class="lb-pts">${m.pts} pts</span></div>
-      </div>
-    </div>`;
-  }).join('<div class="divider"></div>');
-
-  return legend+`<div class="card"><div class="lb-list">${lbHTML}</div></div>`;
-}
-
-function renderMembers(){
-  const form=`<div class="card">
-    <div class="add-form">
-      <div class="add-row">
-        <input class="inp" id="mi" placeholder="Prénom du colocataire…" type="text" onkeydown="if(event.key==='Enter')addMember()"/>
-        <button class="btn" onclick="addMember()">+ Ajouter</button>
-      </div>
-    </div>
-  </div>`;
-
-  if(!S.members.length) return form+`<div class="card"><div class="empty-state"><div class="empty-icon">🏠</div>Aucun membre encore.</div></div>`;
-
-  const list=S.members.map((m,i)=>{
-    const rank=getRank(m.pts);
-    const done=S.tasks.filter(t=>t.assignedTo===m.id&&t.done).length;
-    const total=S.tasks.filter(t=>t.assignedTo===m.id).length;
-    return `<div class="card">
-      <div class="member-card">
-        <div class="avatar" style="background:${avBg(i)};color:${avTxt(i)};width:48px;height:48px;font-size:16px">${initials(m.name)}</div>
-        <div class="member-info">
-          <div class="member-name">${m.name}</div>
-          <div class="member-sub">${done}/${total} tâches · ${m.pts} pts</div>
-          <span class="rank-badge" style="background:${rank.bg};color:${rank.textColor};margin-top:4px;display:inline-block">${rank.icon} ${rank.name}</span>
-        </div>
-        <button class="del-btn" style="font-size:20px" onclick="delMember(${m.id})">🗑</button>
-      </div>
-    </div>`;
-  }).join('');
-
-  return form+list;
-}
-
-function dismissInstall(){ S.installDismissed=true; save(); render(); }
-
-// ─── SERVICE WORKER ───────────────────────────────────────
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').catch(()=>{});
-}
-
-// ─── INIT ─────────────────────────────────────────────────
-render();
-</script>
-</body>
-</html>
