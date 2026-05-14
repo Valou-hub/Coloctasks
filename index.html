@@ -10,11 +10,8 @@
 <link rel="manifest" href="manifest.json"/>
 <title>ColocTasks</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
-
-<!-- Firebase compat (version classique, plus fiable) -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <style>
 :root {
   --bg:#0F0F0D; --bg2:#1A1A17; --bg3:#242420;
@@ -32,8 +29,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .topbar h1 span{color:var(--accent)}
 .top-sub{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
-.dot.ok{background:var(--accent2)}
-.dot.sync{background:#F0B44A;animation:pulse .8s infinite}
+.dot.ok{background:var(--accent2)} .dot.sync{background:#F0B44A;animation:pulse .8s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .week-pill{background:var(--bg3);border-radius:99px;padding:6px 12px;font-size:12px;color:var(--muted);border:1px solid var(--border)}
 .week-pill b{color:var(--accent);font-weight:600}
@@ -54,6 +50,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .sel{appearance:none;-webkit-appearance:none}
 .btn{background:var(--accent);color:#0F0F0D;border:none;border-radius:12px;padding:11px 18px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:opacity .15s}
 .btn:active{opacity:.7}
+.btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
 .filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .fp{flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:99px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all .15s}
@@ -107,12 +104,38 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .spin{width:32px;height:32px;border:3px solid var(--bg3);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .div{height:1px;background:var(--border);margin:12px 0}
-.ib{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--accent);border-radius:16px;padding:14px 16px;margin-bottom:12px;display:flex;gap:12px;align-items:flex-start}
-.ii{font-size:28px;flex-shrink:0}
-.it{flex:1}
-.it b{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent)}
-.it p{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.4}
-.ic{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer}
+
+/* Profile picker overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:500;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg2);border-radius:24px 24px 0 0;padding:24px 20px calc(var(--safe-bottom) + 24px);width:100%;max-width:480px;border-top:1px solid var(--border)}
+.sheet h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
+.sheet p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.profile-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.profile-btn{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;transition:border-color .2s;width:100%}
+.profile-btn:active{opacity:.7}
+.profile-btn.selected{border-color:var(--accent)}
+.profile-btn .av{width:40px;height:40px;font-size:14px;flex-shrink:0}
+.profile-btn-info{flex:1;text-align:left}
+.profile-btn-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
+.profile-btn-pts{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* Notif settings card */
+.notif-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.notif-row:last-child{border-bottom:none;padding-bottom:0}
+.notif-row:first-child{padding-top:0}
+.notif-label{font-size:14px;font-weight:500}
+.notif-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.toggle{position:relative;width:44px;height:26px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-track{position:absolute;inset:0;background:var(--bg3);border-radius:99px;border:1px solid var(--border);transition:all .2s;cursor:pointer}
+.toggle input:checked+.toggle-track{background:var(--accent);border-color:var(--accent)}
+.toggle-track:before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s}
+.toggle input:checked+.toggle-track:before{transform:translateX(18px)}
+.notif-time-row{display:flex;align-items:center;gap:10px;padding:10px 0}
+.notif-time-row label{font-size:13px;color:var(--muted);flex:1}
+.time-inp{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:7px 10px;outline:none;width:100px;text-align:center}
+.my-profile-card{display:flex;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px}
+.change-btn{font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:5px 10px;cursor:pointer;font-family:'DM Sans',sans-serif}
 </style>
 </head>
 <body>
@@ -120,7 +143,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <div class="loading" id="loading">
   <div class="spin"></div>
   <h2>Coloc<span>Tasks</span></h2>
-  <div style="font-size:13px;color:var(--muted)" id="load-msg">Connexion à Firebase…</div>
+  <div style="font-size:13px;color:var(--muted)" id="load-msg">Connexion…</div>
 </div>
 
 <div class="app" style="opacity:0;transition:opacity .4s" id="app">
@@ -136,13 +159,24 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
     <button class="nav-btn active" onclick="showTab('tasks')" id="nav-tasks"><span class="nav-icon">✅</span><span>Tâches</span></button>
     <button class="nav-btn" onclick="showTab('ranking')" id="nav-ranking"><span class="nav-icon">🏆</span><span>Classement</span></button>
     <button class="nav-btn" onclick="showTab('members')" id="nav-members"><span class="nav-icon">👥</span><span>Membres</span></button>
+    <button class="nav-btn" onclick="showTab('settings')" id="nav-settings"><span class="nav-icon">🔔</span><span>Notifs</span></button>
   </nav>
   <div class="toast" id="toast"></div>
 </div>
 
+<!-- Profile picker -->
+<div class="overlay" id="profile-overlay" style="display:none">
+  <div class="sheet">
+    <h3>👋 Qui es-tu ?</h3>
+    <p>Choisis ton profil pour recevoir les bonnes notifications sur ce téléphone.</p>
+    <div class="profile-list" id="profile-list"></div>
+    <div style="font-size:12px;color:var(--muted);text-align:center">Tu pourras changer ça dans Notifications</div>
+  </div>
+</div>
+
 <script>
-// ── Firebase init ──────────────────────────────────────
-const firebaseConfig = {
+// ── Firebase ───────────────────────────────────────────
+firebase.initializeApp({
   apiKey: "AIzaSyCuEW_DoAZhROZAwtLzX4hxJ1yGqFnFouM",
   authDomain: "coloctasks.firebaseapp.com",
   databaseURL: "https://coloctasks-default-rtdb.firebaseio.com",
@@ -150,9 +184,7 @@ const firebaseConfig = {
   storageBucket: "coloctasks.firebasestorage.app",
   messagingSenderId: "287788066696",
   appId: "1:287788066696:web:dd41aaa688a1e1f932fc3d"
-};
-
-firebase.initializeApp(firebaseConfig);
+});
 const db = firebase.database();
 
 // ── Ranks ──────────────────────────────────────────────
@@ -168,12 +200,26 @@ const RANKS = [
 ];
 const ABG  = ['#2D3A1F','#1A2D35','#35271A','#2D1A35','#1A2D2D','#35201A'];
 const ATXT = ['#C8F04A','#4AF0E0','#F0B44A','#D44AF0','#4AF4A4','#F06A4A'];
-
 function getRank(p){for(let i=RANKS.length-1;i>=0;i--)if(p>=RANKS[i].min)return RANKS[i];return RANKS[0]}
 function getNext(p){for(let i=0;i<RANKS.length;i++)if(p<RANKS[i].min)return RANKS[i];return null}
 
+// ── Local prefs ────────────────────────────────────────
+let prefs = {
+  myMemberId: null,
+  notifEnabled: true,
+  notifAssigned: true,
+  notifCompleted: true,
+  notifUrgent: true,
+  notifDaily: true,
+  dailyTime: '08:00',
+};
+function loadPrefs(){ try{ const d=localStorage.getItem('ct_prefs'); if(d) prefs=Object.assign(prefs,JSON.parse(d)); }catch(e){} }
+function savePrefs(){ try{ localStorage.setItem('ct_prefs',JSON.stringify(prefs)); }catch(e){} }
+loadPrefs();
+
 // ── State ──────────────────────────────────────────────
-let S={members:{},tasks:{},filter:'all',tab:'tasks',installDismissed:false};
+let S={members:{},tasks:{},filter:'all',tab:'tasks'};
+let swReg = null;
 
 function ini(n){return(n||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
 function abg(id){const k=Object.keys(S.members);return ABG[k.indexOf(id)%ABG.length]||ABG[0]}
@@ -185,44 +231,187 @@ function syncDot(s){
   d.className='dot '+(s==='ok'?'ok':s==='sync'?'sync':'');
   l.textContent={ok:'Synchronisé ✓',sync:'Sync…',off:'Hors ligne ⚠️'}[s]||'';
 }
-
-function toast(msg){
+function toast(msg,duration=2400){
   const t=document.getElementById('toast');if(!t)return;
   t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2400);
+  clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),duration);
+}
+
+// ── Service Worker + Notifications ────────────────────
+async function initSW(){
+  if(!('serviceWorker' in navigator))return;
+  try{
+    swReg = await navigator.serviceWorker.register('./sw.js');
+    console.log('SW registered');
+  }catch(e){ console.warn('SW failed',e); }
+}
+
+async function requestNotifPermission(){
+  if(!('Notification' in window))return false;
+  if(Notification.permission==='granted')return true;
+  if(Notification.permission==='denied')return false;
+  const result = await Notification.requestPermission();
+  return result==='granted';
+}
+
+function sendLocalNotif(title, body, tag){
+  if(!('Notification' in window)||Notification.permission!=='granted')return;
+  if(swReg){
+    swReg.active && navigator.serviceWorker.controller &&
+      navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',title,body,tag});
+  } else {
+    new Notification(title,{body,icon:'./icon-192.png',tag});
+  }
+}
+
+// ── Daily summary scheduler ────────────────────────────
+let dailyTimer = null;
+function scheduleDailySummary(){
+  if(dailyTimer){ clearTimeout(dailyTimer); dailyTimer=null; }
+  if(!prefs.notifEnabled||!prefs.notifDaily)return;
+  const [h,m] = (prefs.dailyTime||'08:00').split(':').map(Number);
+  const now = new Date();
+  const next = new Date();
+  next.setHours(h,m,0,0);
+  if(next<=now) next.setDate(next.getDate()+1);
+  const ms = next-now;
+  dailyTimer = setTimeout(()=>{
+    sendDailySummary();
+    scheduleDailySummary(); // reschedule for next day
+  }, ms);
+}
+
+function sendDailySummary(){
+  const tasks = Object.values(S.tasks);
+  const total = tasks.length;
+  const done = tasks.filter(t=>t.done).length;
+  const urgent = tasks.filter(t=>!t.done && t.prio==='high').length;
+  let body = `${done}/${total} tâches complétées aujourd'hui.`;
+  if(urgent>0) body += ` ⚠️ ${urgent} tâche${urgent>1?'s':''} urgente${urgent>1?'s':''} en attente !`;
+  else body += ' 🎉 Aucune urgence !';
+  sendLocalNotif('📋 Résumé ColocTasks', body, 'daily-summary');
+}
+
+// ── Urgent reminder (check every 2h) ──────────────────
+function scheduleUrgentCheck(){
+  setInterval(()=>{
+    if(!prefs.notifEnabled||!prefs.notifUrgent)return;
+    const urgent = Object.values(S.tasks).filter(t=>!t.done&&t.prio==='high');
+    if(urgent.length>0){
+      sendLocalNotif(
+        '🔴 Tâches urgentes en attente !',
+        urgent.slice(0,3).map(t=>t.name).join(', ')+(urgent.length>3?' …':''),
+        'urgent-reminder'
+      );
+    }
+  }, 2*60*60*1000); // every 2 hours
 }
 
 // ── Firebase listener ──────────────────────────────────
 let first=true;
+let prevTasks={};
+let prevMembers={};
+
 db.ref('coloc').on('value', snap=>{
   const d=snap.val()||{};
-  S.members=d.members||{};
-  S.tasks=d.tasks||{};
+  const newTasks=d.tasks||{};
+  const newMembers=d.members||{};
+
+  // Detect changes for notifications
+  if(!first && prefs.notifEnabled){
+    // Task assigned to me
+    if(prefs.notifAssigned && prefs.myMemberId){
+      Object.entries(newTasks).forEach(([id,t])=>{
+        const old=prevTasks[id];
+        if(t.assignedTo===prefs.myMemberId && (!old||old.assignedTo!==prefs.myMemberId)){
+          const me=newMembers[prefs.myMemberId];
+          sendLocalNotif('📌 Nouvelle tâche assignée !', `"${t.name}" t'a été assignée.`, 'assigned-'+id);
+        }
+      });
+    }
+    // Co-loc completed a task
+    if(prefs.notifCompleted){
+      Object.entries(newTasks).forEach(([id,t])=>{
+        const old=prevTasks[id];
+        if(t.done && old && !old.done && t.assignedTo && t.assignedTo!==prefs.myMemberId){
+          const who=newMembers[t.assignedTo];
+          if(who) sendLocalNotif('✅ Tâche complétée !', `${who.name} a fait : "${t.name}" (+${t.pts} pts)`, 'done-'+id);
+        }
+      });
+    }
+    // Rank up
+    if(prefs.myMemberId){
+      const me=newMembers[prefs.myMemberId];
+      const oldMe=prevMembers[prefs.myMemberId];
+      if(me&&oldMe&&getRank(me.pts||0).name!==getRank(oldMe.pts||0).name){
+        const rank=getRank(me.pts||0);
+        sendLocalNotif('🎉 Nouveau rang !', `Tu atteins le rang ${rank.icon} ${rank.name} !`, 'rankup');
+      }
+    }
+  }
+
+  prevTasks=JSON.parse(JSON.stringify(newTasks));
+  prevMembers=JSON.parse(JSON.stringify(newMembers));
+  S.members=newMembers;
+  S.tasks=newTasks;
   syncDot('ok');
+
   if(first){
     first=false;
     document.getElementById('loading').style.display='none';
     document.getElementById('app').style.opacity='1';
+    // Show profile picker if no profile set
+    if(!prefs.myMemberId || !S.members[prefs.myMemberId]){
+      showProfilePicker();
+    }
+    scheduleDailySummary();
+    scheduleUrgentCheck();
   }
   render();
-}, err=>{
-  console.error(err);
-  document.getElementById('load-msg').textContent='Erreur : '+err.message;
-  syncDot('off');
-});
+}, err=>{ console.error(err); syncDot('off'); document.getElementById('load-msg').textContent='Erreur: '+err.message; });
+
+// ── Profile picker ────────────────────────────────────
+function showProfilePicker(){
+  const overlay=document.getElementById('profile-overlay');
+  const list=document.getElementById('profile-list');
+  overlay.style.display='flex';
+  const members=Object.entries(S.members);
+  if(!members.length){
+    list.innerHTML='<div style="text-align:center;color:var(--muted);font-size:13px;padding:20px 0">Aucun membre encore.<br>Ajoutes-en un dans l\'onglet Membres !</div>';
+    return;
+  }
+  list.innerHTML=members.map(([id,m])=>{
+    const rank=getRank(m.pts||0);
+    return `<button class="profile-btn${prefs.myMemberId===id?' selected':''}" onclick="selectProfile('${id}')">
+      <div class="av" style="background:${abg(id)};color:${atxt(id)}">${ini(m.name)}</div>
+      <div class="profile-btn-info">
+        <div class="profile-btn-name">${m.name}</div>
+        <div class="profile-btn-pts">${rank.icon} ${rank.name} · ${m.pts||0} pts</div>
+      </div>
+    </button>`;
+  }).join('');
+}
+
+async function selectProfile(id){
+  prefs.myMemberId=id;
+  savePrefs();
+  document.getElementById('profile-overlay').style.display='none';
+  const granted=await requestNotifPermission();
+  if(granted){
+    toast('Notifications activées ! 🔔');
+    scheduleDailySummary();
+  } else {
+    toast('Profil enregistré (notifications refusées)');
+  }
+  render();
+}
 
 // ── Actions ────────────────────────────────────────────
 function addTask(){
   const inp=document.getElementById('ti');
   const name=inp.value.trim();if(!name)return;
   syncDot('sync');
-  db.ref('coloc/tasks').push({
-    name,
-    cat:document.getElementById('tc').value,
-    prio:document.getElementById('tp').value,
-    pts:parseInt(document.getElementById('tpts').value),
-    done:false,assignedTo:null,createdAt:Date.now()
-  });
+  db.ref('coloc/tasks').push({name,cat:document.getElementById('tc').value,prio:document.getElementById('tp').value,pts:parseInt(document.getElementById('tpts').value),done:false,assignedTo:null,createdAt:Date.now()});
   inp.value='';toast('Tâche ajoutée ! ✅');
 }
 
@@ -283,15 +472,27 @@ function delMember(id){
   Object.entries(S.tasks).forEach(([tid,t])=>{if(t.assignedTo===id)u['coloc/tasks/'+tid+'/assignedTo']=null;});
   if(Object.keys(u).length)db.ref().update(u);
   db.ref('coloc/members/'+id).remove();
+  if(prefs.myMemberId===id){ prefs.myMemberId=null; savePrefs(); }
 }
 
 function setFilter(f){S.filter=f;render()}
-function dismissInstall(){S.installDismissed=true;render()}
-
 function showTab(tab){
   S.tab=tab;
-  ['tasks','ranking','members'].forEach(t=>document.getElementById('nav-'+t).classList.toggle('active',t===tab));
+  ['tasks','ranking','members','settings'].forEach(t=>document.getElementById('nav-'+t).classList.toggle('active',t===tab));
   render();
+}
+
+function togglePref(key){
+  prefs[key]=!prefs[key];
+  savePrefs();
+  if(key==='notifDaily'||key==='notifEnabled') scheduleDailySummary();
+  render();
+}
+
+function setDailyTime(val){
+  prefs.dailyTime=val;
+  savePrefs();
+  scheduleDailySummary();
 }
 
 // ── Render ─────────────────────────────────────────────
@@ -299,54 +500,43 @@ function render(){
   const tasks=Object.values(S.tasks);
   const done=tasks.filter(t=>t.done).length,total=tasks.length;
   const pct=total?Math.round(done/total*100):0;
-  const wp=document.getElementById('wp');
-  if(wp)wp.innerHTML=done+'/<b>'+total+'</b>';
+  const wp=document.getElementById('wp');if(wp)wp.innerHTML=done+'/<b>'+total+'</b>';
   const el=document.getElementById('content');if(!el)return;
-  if(S.tab==='tasks')  el.innerHTML=renderTasks(done,total,pct);
-  if(S.tab==='ranking')el.innerHTML=renderRanking();
-  if(S.tab==='members')el.innerHTML=renderMembers();
+  if(S.tab==='tasks')   el.innerHTML=renderTasks(done,total,pct);
+  if(S.tab==='ranking') el.innerHTML=renderRanking();
+  if(S.tab==='members') el.innerHTML=renderMembers();
+  if(S.tab==='settings')el.innerHTML=renderSettings();
 }
 
 function renderTasks(done,total,pct){
   const prog='<div class="prog-label"><span>Progression</span><b>'+pct+'%</b></div><div class="prog-bg"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
-
-  let banner='';
-  if(!S.installDismissed&&!window.matchMedia('(display-mode: standalone)').matches){
-    banner='<div class="ib"><div class="ii">📲</div><div class="it"><b>Installer l\'app</b><p>Safari → <b>Partager</b> → <b>"Sur l\'écran d\'accueil"</b></p></div><button class="ic" onclick="dismissInstall()">✕</button></div>';
-  }
-
   const form='<div class="card"><div class="add-form">'
     +'<input class="inp" id="ti" placeholder="Nouvelle tâche…" type="text" onkeydown="if(event.key===\'Enter\')addTask()"/>'
-    +'<div class="add-row">'
-    +'<select class="inp sel" id="tc" style="flex:1"><option value="Cuisine">🍽 Cuisine</option><option value="Salle de bain">🚿 Salle de bain</option><option value="Salon">🛋 Salon</option><option value="Poubelles">🗑 Poubelles</option><option value="Courses">🛒 Courses</option><option value="Autre">📦 Autre</option></select>'
-    +'<select class="inp sel" id="tp" style="flex:1"><option value="high">🔴 Urgent</option><option value="med">🟡 Normal</option><option value="low">🟢 Léger</option></select>'
-    +'</div><div class="add-row">'
-    +'<select class="inp sel" id="tpts" style="flex:1"><option value="5">5 pts</option><option value="10" selected>10 pts</option><option value="20">20 pts</option><option value="30">30 pts</option></select>'
-    +'<button class="btn" onclick="addTask()" style="flex:1">+ Ajouter</button>'
-    +'</div></div></div>';
-
+    +'<div class="add-row"><select class="inp sel" id="tc" style="flex:1"><option value="Cuisine">🍽 Cuisine</option><option value="Salle de bain">🚿 Salle de bain</option><option value="Salon">🛋 Salon</option><option value="Poubelles">🗑 Poubelles</option><option value="Courses">🛒 Courses</option><option value="Autre">📦 Autre</option></select>'
+    +'<select class="inp sel" id="tp" style="flex:1"><option value="high">🔴 Urgent</option><option value="med">🟡 Normal</option><option value="low">🟢 Léger</option></select></div>'
+    +'<div class="add-row"><select class="inp sel" id="tpts" style="flex:1"><option value="5">5 pts</option><option value="10" selected>10 pts</option><option value="20">20 pts</option><option value="30">30 pts</option></select>'
+    +'<button class="btn" onclick="addTask()" style="flex:1">+ Ajouter</button></div></div></div>';
   const cats=['all','pending','done','Cuisine','Salle de bain','Poubelles','Salon','Courses'];
   const labels={all:'Tout',pending:'À faire',done:'Faites',Cuisine:'Cuisine','Salle de bain':'Salle de bain',Poubelles:'Poubelles',Salon:'Salon',Courses:'Courses'};
   const filters='<div class="filters">'+cats.map(c=>'<button class="fp'+(S.filter===c?' active':'')+'" onclick="setFilter(\''+c+'\')">'+labels[c]+'</button>').join('')+'</div>';
-
   let entries=Object.entries(S.tasks);
   if(S.filter==='pending')entries=entries.filter(([,t])=>!t.done);
   else if(S.filter==='done')entries=entries.filter(([,t])=>t.done);
   else if(S.filter!=='all')entries=entries.filter(([,t])=>t.cat===S.filter);
   entries.sort(([,a],[,b])=>(a.createdAt||0)-(b.createdAt||0));
-
   const taskHTML=entries.length?entries.map(([id,t])=>{
     const pc={high:'ch',med:'cm',low:'cl'}[t.prio]||'cm';
     const pl={high:'Urgent',med:'Normal',low:'Léger'}[t.prio]||'Normal';
     const mopts='<option value="">Assigner…</option>'+Object.entries(S.members).map(([mid,m])=>'<option value="'+mid+'"'+(t.assignedTo===mid?' selected':'')+'>'+m.name+'</option>').join('');
-    return '<div class="ti'+(t.done?' done':'')+'"><button class="chk'+(t.done?' on':'')+'" onclick="toggleTask(\''+id+'\')">'+(t.done?'✓':'')+'</button>'
-      +'<div class="tbody"><div class="tname'+(t.done?' s':'')+'">'+t.name+'</div>'
+    const ismine=t.assignedTo===prefs.myMemberId;
+    return '<div class="ti'+(t.done?' done':'')+(ismine?' style="border-color:rgba(200,240,74,.3)"':'')+'">'
+      +'<button class="chk'+(t.done?' on':'')+'" onclick="toggleTask(\''+id+'\')">'+(t.done?'✓':'')+'</button>'
+      +'<div class="tbody"><div class="tname'+(t.done?' s':'')+'">'+t.name+(ismine?' <span style="color:var(--accent);font-size:10px">● moi</span>':'')+'</div>'
       +'<div class="tmeta"><span class="chip cc">'+(t.cat||'Autre')+'</span><span class="chip '+pc+'">'+pl+'</span><span class="chip cp">+'+t.pts+' pts</span></div></div>'
       +'<div class="tright"><button class="dbtn" onclick="delTask(\''+id+'\')">🗑</button>'
       +'<select class="asel" onchange="assignTask(\''+id+'\',this.value)">'+mopts+'</select></div></div>';
   }).join(''):'<div class="empty"><div class="ei">🎉</div>Aucune tâche ici !</div>';
-
-  return banner+'<div class="card">'+prog+'</div>'+form+filters+'<div class="task-list">'+taskHTML+'</div>';
+  return '<div class="card">'+prog+'</div>'+form+filters+'<div class="task-list">'+taskHTML+'</div>';
 }
 
 function renderRanking(){
@@ -354,51 +544,109 @@ function renderRanking(){
     const next=RANKS[i+1];
     return '<div class="rc" style="border-color:'+r.bar+'33"><div class="ri">'+r.icon+'</div><div class="rn" style="color:'+r.txt+'">'+r.name+'</div><div class="rr">'+r.min+(next?' – '+(next.min-1):'+')+'pts</div></div>';
   }).join('')+'</div>';
-
   const members=Object.entries(S.members).sort(([,a],[,b])=>(b.pts||0)-(a.pts||0));
   const maxPts=Math.max(...members.map(([,m])=>m.pts||0),1);
   const medals=['🥇','🥈','🥉'];
   if(!members.length)return legend+'<div class="card"><div class="empty"><div class="ei">👥</div>Ajoute des membres !</div></div>';
-
   const lbHTML=members.map(([id,m],i)=>{
-    const rank=getRank(m.pts||0);
-    const next=getNext(m.pts||0);
+    const rank=getRank(m.pts||0);const next=getNext(m.pts||0);
     const pct=Math.round((m.pts||0)/maxPts*100);
     const nextTxt=next?(next.min-(m.pts||0))+' pts → '+next.icon+' '+next.name:'👑 Rang maximum !';
     return '<div class="lbi"><div class="lbp">'+(i<3?medals[i]:i+1)+'</div>'
       +'<div class="av" style="background:'+abg(id)+';color:'+atxt(id)+'">'+ini(m.name)+'</div>'
-      +'<div class="lbinfo"><div class="lbnr"><span class="lbn">'+m.name+'</span><span class="rbadge" style="background:'+rank.bg+';color:'+rank.txt+'">'+rank.icon+' '+rank.name+'</span></div>'
+      +'<div class="lbinfo"><div class="lbnr"><span class="lbn">'+m.name+(id===prefs.myMemberId?' 👤':'')+'</span><span class="rbadge" style="background:'+rank.bg+';color:'+rank.txt+'">'+rank.icon+' '+rank.name+'</span></div>'
       +'<div class="lbbb"><div class="lbb" style="width:'+pct+'%;background:'+rank.bar+'"></div></div>'
       +'<div class="lbs"><span>'+nextTxt+'</span><span class="lbpts">'+(m.pts||0)+' pts</span></div></div></div>';
   }).join('<div class="div"></div>');
-
   return legend+'<div class="card"><div class="lb-list">'+lbHTML+'</div></div>';
 }
 
 function renderMembers(){
   const form='<div class="card"><div class="add-form"><div class="add-row">'
     +'<input class="inp" id="mi" placeholder="Prénom du colocataire…" type="text" onkeydown="if(event.key===\'Enter\')addMember()"/>'
-    +'<button class="btn" onclick="addMember()">+ Ajouter</button>'
-    +'</div></div></div>';
-
+    +'<button class="btn" onclick="addMember()">+ Ajouter</button></div></div></div>';
   const members=Object.entries(S.members);
   if(!members.length)return form+'<div class="card"><div class="empty"><div class="ei">🏠</div>Aucun membre encore.</div></div>';
-
   const list=members.map(([id,m],i)=>{
     const rank=getRank(m.pts||0);
     const td=Object.values(S.tasks).filter(t=>t.assignedTo===id&&t.done).length;
     const tt=Object.values(S.tasks).filter(t=>t.assignedTo===id).length;
     return '<div class="card"><div class="mcard">'
       +'<div class="av" style="background:'+abg(id)+';color:'+atxt(id)+';width:48px;height:48px;font-size:16px">'+ini(m.name)+'</div>'
-      +'<div class="minfo"><div class="mname">'+m.name+'</div><div class="msub">'+td+'/'+tt+' tâches · '+(m.pts||0)+' pts</div>'
+      +'<div class="minfo"><div class="mname">'+m.name+(id===prefs.myMemberId?' 👤':'')+'</div>'
+      +'<div class="msub">'+td+'/'+tt+' tâches · '+(m.pts||0)+' pts</div>'
       +'<span class="rbadge" style="background:'+rank.bg+';color:'+rank.txt+';margin-top:4px;display:inline-block">'+rank.icon+' '+rank.name+'</span></div>'
       +'<button class="dbtn" style="font-size:20px" onclick="delMember(\''+id+'\')">🗑</button></div></div>';
   }).join('');
-
   return form+list;
 }
 
-if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+function renderSettings(){
+  const me=prefs.myMemberId?S.members[prefs.myMemberId]:null;
+  const notifGranted='Notification' in window && Notification.permission==='granted';
+  const notifDenied='Notification' in window && Notification.permission==='denied';
+
+  const profileSection=me
+    ?`<div class="card">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Mon profil</div>
+        <div class="my-profile-card">
+          <div class="av" style="background:${abg(prefs.myMemberId)};color:${atxt(prefs.myMemberId)};width:44px;height:44px;font-size:15px">${ini(me.name)}</div>
+          <div style="flex:1"><div class="mname">${me.name}</div><div class="msub">${getRank(me.pts||0).icon} ${getRank(me.pts||0).name} · ${me.pts||0} pts</div></div>
+          <button class="change-btn" onclick="showProfilePicker()">Changer</button>
+        </div>
+      </div>`
+    :`<div class="card" style="text-align:center;padding:20px">
+        <div style="font-size:28px;margin-bottom:8px">👤</div>
+        <div style="font-size:14px;font-weight:500;margin-bottom:4px">Aucun profil sélectionné</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Choisis ton profil pour recevoir les notifications</div>
+        <button class="btn" onclick="showProfilePicker()">Choisir mon profil</button>
+      </div>`;
+
+  const notifStatus=notifDenied
+    ?'<div style="background:rgba(240,74,74,.12);border:1px solid rgba(240,74,74,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:#F08A8A;margin-bottom:12px">⚠️ Notifications bloquées dans les réglages de ton navigateur. Active-les manuellement.</div>'
+    :notifGranted
+    ?'<div style="background:rgba(74,240,180,.1);border:1px solid rgba(74,240,180,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--accent2);margin-bottom:12px">🔔 Notifications activées ✓</div>'
+    :`<div style="background:rgba(200,240,74,.08);border:1px solid rgba(200,240,74,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--accent);margin-bottom:12px;cursor:pointer" onclick="requestAndEnable()">💡 Appuie ici pour activer les notifications →</div>`;
+
+  const toggle=(key,label,sub)=>`<div class="notif-row">
+    <div><div class="notif-label">${label}</div><div class="notif-sub">${sub}</div></div>
+    <label class="toggle"><input type="checkbox" ${prefs[key]?'checked':''} onchange="togglePref('${key}')"/><div class="toggle-track"></div></label>
+  </div>`;
+
+  return profileSection
+    +`<div class="card">
+        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Notifications</div>
+        ${notifStatus}
+        ${toggle('notifEnabled','Activer les notifications','Maître interrupteur de toutes les notifs')}
+        ${toggle('notifAssigned','Tâche assignée','Quand quelqu\'un t\'assigne une tâche')}
+        ${toggle('notifCompleted','Tâche complétée','Quand un co-loc finit une tâche')}
+        ${toggle('notifUrgent','Rappel urgences','Rappel toutes les 2h si des tâches urgentes attendent')}
+        ${toggle('notifDaily','Résumé quotidien','Récapitulatif de l\'état des tâches')}
+        <div class="notif-time-row">
+          <label>Heure du résumé quotidien</label>
+          <input class="time-inp" type="time" value="${prefs.dailyTime||'08:00'}" onchange="setDailyTime(this.value)"/>
+        </div>
+      </div>
+      <div class="card" style="text-align:center">
+        <button class="btn btn-ghost" onclick="testNotif()" style="width:100%">🔔 Tester une notification</button>
+      </div>`;
+}
+
+async function requestAndEnable(){
+  const ok=await requestNotifPermission();
+  if(ok){ toast('Notifications activées ! 🔔'); scheduleDailySummary(); }
+  else toast('Notifications refusées :(');
+  render();
+}
+
+function testNotif(){
+  if(Notification.permission!=='granted'){ toast('Active les notifications d\'abord !'); return; }
+  sendLocalNotif('🔔 Test ColocTasks', 'Les notifications fonctionnent correctement !', 'test-notif');
+  toast('Notification envoyée !');
+}
+
+// Init
+initSW();
 </script>
 </body>
 </html>
