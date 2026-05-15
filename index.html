@@ -14,9 +14,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
 :root {
-  --bg:#0F0F0D; --bg2:#1A1A17; --bg3:#242420;
-  --border:rgba(255,255,255,0.08); --text:#F0EFE8;
-  --muted:rgba(240,239,232,0.45); --accent:#C8F04A; --accent2:#4AF0B4;
+  --bg:#0F0F0D;--bg2:#1A1A17;--bg3:#242420;
+  --border:rgba(255,255,255,0.08);--text:#F0EFE8;
+  --muted:rgba(240,239,232,0.45);--accent:#C8F04A;--accent2:#4AF0B4;
   --safe-top:env(safe-area-inset-top,44px);
   --safe-bottom:env(safe-area-inset-bottom,20px);
   --nav-h:70px;
@@ -24,20 +24,20 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
 .app{display:flex;flex-direction:column;height:100%}
-.topbar{padding:calc(var(--safe-top) + 12px) 20px 14px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar{padding:calc(var(--safe-top)+12px) 20px 14px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .topbar h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
 .topbar h1 span{color:var(--accent)}
 .top-sub{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:5px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
-.dot.ok{background:var(--accent2)} .dot.sync{background:#F0B44A;animation:pulse .8s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.dot.ok{background:var(--accent2)}.dot.sync{background:#F0B44A;animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
 .week-pill{background:var(--bg3);border-radius:99px;padding:6px 12px;font-size:12px;color:var(--muted);border:1px solid var(--border)}
 .week-pill b{color:var(--accent);font-weight:600}
-.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--nav-h) + var(--safe-bottom) + 16px)}
-.nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + var(--safe-bottom));padding-bottom:var(--safe-bottom);background:rgba(15,15,13,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-around;padding-top:10px;z-index:100}
-.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;padding:0 20px;transition:color .2s}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px 16px calc(var(--nav-h)+var(--safe-bottom)+16px)}
+.nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h)+var(--safe-bottom));padding-bottom:var(--safe-bottom);background:rgba(15,15,13,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-around;padding-top:10px;z-index:100}
+.nav-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;padding:0 14px;transition:color .2s}
 .nav-btn.active{color:var(--accent)}
-.nav-icon{font-size:22px;line-height:1}
+.nav-icon{font-size:20px;line-height:1}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:16px;margin-bottom:12px}
 .prog-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
 .prog-label b{color:var(--accent);font-size:13px}
@@ -51,6 +51,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .btn{background:var(--accent);color:#0F0F0D;border:none;border-radius:12px;padding:11px 18px;font-family:'Syne',sans-serif;font-weight:700;font-size:14px;cursor:pointer;white-space:nowrap;transition:opacity .15s}
 .btn:active{opacity:.7}
 .btn-ghost{background:var(--bg3);color:var(--text);border:1px solid var(--border)}
+.btn-sm{padding:7px 14px;font-size:12px;border-radius:9px}
 .filters{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .fp{flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:99px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:12px;padding:5px 12px;cursor:pointer;white-space:nowrap;transition:all .15s}
@@ -75,51 +76,61 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .dbtn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:16px;padding:2px}
 .empty{text-align:center;padding:40px 0;color:var(--muted);font-size:14px}
 .ei{font-size:36px;margin-bottom:10px}
+/* Ranks */
 .rank-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
 .rc{border-radius:14px;border:1px solid var(--border);padding:10px 6px;text-align:center;background:var(--bg2)}
-.ri{font-size:22px;margin-bottom:4px}
-.rn{font-family:'Syne',sans-serif;font-size:10px;font-weight:700}
-.rr{font-size:9px;color:var(--muted);margin-top:2px}
+.ri{font-size:22px;margin-bottom:4px}.rn{font-family:'Syne',sans-serif;font-size:10px;font-weight:700}.rr{font-size:9px;color:var(--muted);margin-top:2px}
+/* Leaderboard */
 .lb-list{display:flex;flex-direction:column;gap:10px}
 .lbi{display:flex;align-items:center;gap:12px}
 .lbp{width:28px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);text-align:center;flex-shrink:0}
 .av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;flex-shrink:0}
 .lbinfo{flex:1;min-width:0}
-.lbnr{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.lbnr{display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap}
 .lbn{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
 .rbadge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:99px;font-family:'Syne',sans-serif}
 .lbbb{height:4px;background:var(--bg3);border-radius:99px;overflow:hidden;margin-bottom:4px}
 .lbb{height:4px;border-radius:99px;transition:width .6s}
 .lbs{display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
 .lbpts{color:var(--accent);font-weight:600}
+/* Members */
 .mcard{display:flex;align-items:center;gap:12px}
 .minfo{flex:1}
 .mname{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px}
 .msub{font-size:11px;color:var(--muted)}
-.toast{position:fixed;bottom:calc(var(--nav-h) + var(--safe-bottom) + 12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#0F0F0D;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:10px 20px;border-radius:99px;white-space:nowrap;opacity:0;transition:all .3s;pointer-events:none;z-index:200}
+/* Toast */
+.toast{position:fixed;bottom:calc(var(--nav-h)+var(--safe-bottom)+12px);left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:#0F0F0D;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;padding:10px 20px;border-radius:99px;white-space:nowrap;opacity:0;transition:all .3s;pointer-events:none;z-index:200}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Loading */
 .loading{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px}
 .loading h2{font-family:'Syne',sans-serif;font-size:28px;font-weight:800}
 .loading h2 span{color:var(--accent)}
 .spin{width:32px;height:32px;border:3px solid var(--bg3);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .div{height:1px;background:var(--border);margin:12px 0}
-
-/* Profile picker overlay */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:500;display:flex;align-items:flex-end;justify-content:center}
-.sheet{background:var(--bg2);border-radius:24px 24px 0 0;padding:24px 20px calc(var(--safe-bottom) + 24px);width:100%;max-width:480px;border-top:1px solid var(--border)}
-.sheet h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
-.sheet p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
-.profile-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
-.profile-btn{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;transition:border-color .2s;width:100%}
-.profile-btn:active{opacity:.7}
-.profile-btn.selected{border-color:var(--accent)}
-.profile-btn .av{width:40px;height:40px;font-size:14px;flex-shrink:0}
-.profile-btn-info{flex:1;text-align:left}
-.profile-btn-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
-.profile-btn-pts{font-size:12px;color:var(--muted);margin-top:2px}
-
-/* Notif settings card */
+/* History */
+.day-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;margin-bottom:12px;overflow:hidden}
+.day-header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.day-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700}
+.day-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.day-badge{font-size:20px}
+.day-body{padding:0 16px 14px;border-top:1px solid var(--border)}
+.day-member-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.day-member-row:last-child{border-bottom:none;padding-bottom:0}
+.day-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:12px;font-weight:800;flex-shrink:0}
+.day-member-info{flex:1}
+.day-member-name{font-size:13px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between}
+.day-pts-badge{font-size:11px;color:var(--accent);font-weight:600}
+.day-task-list{display:flex;flex-direction:column;gap:3px}
+.day-task-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.day-task-item:before{content:'✓';color:var(--accent2);font-size:11px}
+/* Today banner */
+.today-banner{background:linear-gradient(135deg,rgba(200,240,74,.08),rgba(74,240,180,.06));border:1px solid rgba(200,240,74,.2);border-radius:16px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.today-date{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent)}
+.today-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.countdown{font-family:'Syne',sans-serif;font-size:12px;color:var(--muted);text-align:right;flex-shrink:0}
+.countdown b{color:var(--accent2);display:block;font-size:16px}
+/* Notif */
 .notif-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
 .notif-row:last-child{border-bottom:none;padding-bottom:0}
 .notif-row:first-child{padding-top:0}
@@ -131,11 +142,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .toggle input:checked+.toggle-track{background:var(--accent);border-color:var(--accent)}
 .toggle-track:before{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s}
 .toggle input:checked+.toggle-track:before{transform:translateX(18px)}
-.notif-time-row{display:flex;align-items:center;gap:10px;padding:10px 0}
-.notif-time-row label{font-size:13px;color:var(--muted);flex:1}
-.time-inp{background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:7px 10px;outline:none;width:100px;text-align:center}
 .my-profile-card{display:flex;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px}
 .change-btn{font-size:12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--muted);padding:5px 10px;cursor:pointer;font-family:'DM Sans',sans-serif}
+/* Profile overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:500;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg2);border-radius:24px 24px 0 0;padding:24px 20px calc(var(--safe-bottom)+24px);width:100%;max-width:480px;border-top:1px solid var(--border)}
+.sheet h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:6px}
+.sheet p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5}
+.profile-list{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.profile-btn{display:flex;align-items:center;gap:12px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;transition:border-color .2s;width:100%}
+.profile-btn:active{opacity:.7}
+.profile-btn.selected{border-color:var(--accent)}
+.profile-btn .av{width:40px;height:40px;font-size:14px;flex-shrink:0}
+.profile-btn-info{flex:1;text-align:left}
+.profile-btn-name{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text)}
+.profile-btn-pts{font-size:12px;color:var(--muted);margin-top:2px}
 </style>
 </head>
 <body>
@@ -158,13 +179,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
   <nav class="nav">
     <button class="nav-btn active" onclick="showTab('tasks')" id="nav-tasks"><span class="nav-icon">✅</span><span>Tâches</span></button>
     <button class="nav-btn" onclick="showTab('ranking')" id="nav-ranking"><span class="nav-icon">🏆</span><span>Classement</span></button>
+    <button class="nav-btn" onclick="showTab('history')" id="nav-history"><span class="nav-icon">📅</span><span>Historique</span></button>
     <button class="nav-btn" onclick="showTab('members')" id="nav-members"><span class="nav-icon">👥</span><span>Membres</span></button>
     <button class="nav-btn" onclick="showTab('settings')" id="nav-settings"><span class="nav-icon">🔔</span><span>Notifs</span></button>
   </nav>
   <div class="toast" id="toast"></div>
 </div>
 
-<!-- Profile picker -->
 <div class="overlay" id="profile-overlay" style="display:none">
   <div class="sheet">
     <h3>👋 Qui es-tu ?</h3>
@@ -177,53 +198,67 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 <script>
 // ── Firebase ───────────────────────────────────────────
 firebase.initializeApp({
-  apiKey: "AIzaSyCuEW_DoAZhROZAwtLzX4hxJ1yGqFnFouM",
-  authDomain: "coloctasks.firebaseapp.com",
-  databaseURL: "https://coloctasks-default-rtdb.firebaseio.com",
-  projectId: "coloctasks",
-  storageBucket: "coloctasks.firebasestorage.app",
-  messagingSenderId: "287788066696",
-  appId: "1:287788066696:web:dd41aaa688a1e1f932fc3d"
+  apiKey:"AIzaSyCuEW_DoAZhROZAwtLzX4hxJ1yGqFnFouM",
+  authDomain:"coloctasks.firebaseapp.com",
+  databaseURL:"https://coloctasks-default-rtdb.firebaseio.com",
+  projectId:"coloctasks",
+  storageBucket:"coloctasks.firebasestorage.app",
+  messagingSenderId:"287788066696",
+  appId:"1:287788066696:web:dd41aaa688a1e1f932fc3d"
 });
 const db = firebase.database();
 
 // ── Ranks ──────────────────────────────────────────────
-const RANKS = [
-  {name:'Fer',         icon:'⚙️', min:0,   bar:'#888780',bg:'rgba(136,135,128,.15)',txt:'#B8B6AF'},
-  {name:'Bronze',      icon:'🥉', min:15,  bar:'#CD7F32',bg:'rgba(205,127,50,.18)', txt:'#E8A46A'},
-  {name:'Argent',      icon:'🪙', min:35,  bar:'#C0C0C0',bg:'rgba(192,192,192,.15)',txt:'#D8D8D8'},
-  {name:'Or',          icon:'🥇', min:60,  bar:'#EFC050',bg:'rgba(239,192,80,.18)', txt:'#F0D080'},
-  {name:'Platine',     icon:'💠', min:100, bar:'#4AF0B4',bg:'rgba(74,240,180,.15)', txt:'#7AF0C8'},
-  {name:'Diamant',     icon:'🔷', min:150, bar:'#60B0FF',bg:'rgba(96,176,255,.18)', txt:'#90C8FF'},
-  {name:'Maître',      icon:'⚡', min:225, bar:'#A080FF',bg:'rgba(160,128,255,.18)',txt:'#C0A8FF'},
-  {name:'Grand Maître',icon:'👑', min:350, bar:'#F0A040',bg:'rgba(240,160,64,.2)',  txt:'#FFD080'},
+const RANKS=[
+  {name:'Fer',         icon:'⚙️',min:0,  bar:'#888780',bg:'rgba(136,135,128,.15)',txt:'#B8B6AF'},
+  {name:'Bronze',      icon:'🥉',min:15, bar:'#CD7F32',bg:'rgba(205,127,50,.18)', txt:'#E8A46A'},
+  {name:'Argent',      icon:'🪙',min:35, bar:'#C0C0C0',bg:'rgba(192,192,192,.15)',txt:'#D8D8D8'},
+  {name:'Or',          icon:'🥇',min:60, bar:'#EFC050',bg:'rgba(239,192,80,.18)', txt:'#F0D080'},
+  {name:'Platine',     icon:'💠',min:100,bar:'#4AF0B4',bg:'rgba(74,240,180,.15)', txt:'#7AF0C8'},
+  {name:'Diamant',     icon:'🔷',min:150,bar:'#60B0FF',bg:'rgba(96,176,255,.18)', txt:'#90C8FF'},
+  {name:'Maître',      icon:'⚡',min:225,bar:'#A080FF',bg:'rgba(160,128,255,.18)',txt:'#C0A8FF'},
+  {name:'Grand Maître',icon:'👑',min:350,bar:'#F0A040',bg:'rgba(240,160,64,.2)',  txt:'#FFD080'},
 ];
-const ABG  = ['#2D3A1F','#1A2D35','#35271A','#2D1A35','#1A2D2D','#35201A'];
-const ATXT = ['#C8F04A','#4AF0E0','#F0B44A','#D44AF0','#4AF4A4','#F06A4A'];
+const ABG =['#2D3A1F','#1A2D35','#35271A','#2D1A35','#1A2D2D','#35201A'];
+const ATXT=['#C8F04A','#4AF0E0','#F0B44A','#D44AF0','#4AF4A4','#F06A4A'];
 function getRank(p){for(let i=RANKS.length-1;i>=0;i--)if(p>=RANKS[i].min)return RANKS[i];return RANKS[0]}
 function getNext(p){for(let i=0;i<RANKS.length;i++)if(p<RANKS[i].min)return RANKS[i];return null}
 
 // ── Local prefs ────────────────────────────────────────
-let prefs = {
-  myMemberId: null,
-  notifEnabled: true,
-  notifAssigned: true,
-  notifCompleted: true,
-  notifUrgent: true,
-  notifDaily: true,
-  dailyTime: '08:00',
-};
-function loadPrefs(){ try{ const d=localStorage.getItem('ct_prefs'); if(d) prefs=Object.assign(prefs,JSON.parse(d)); }catch(e){} }
-function savePrefs(){ try{ localStorage.setItem('ct_prefs',JSON.stringify(prefs)); }catch(e){} }
+let prefs={myMemberId:null,notifEnabled:true,notifAssigned:true,notifCompleted:true,notifUrgent:true,notifDaily:true,dailyTime:'08:00'};
+function loadPrefs(){try{const d=localStorage.getItem('ct_prefs');if(d)prefs=Object.assign(prefs,JSON.parse(d))}catch(e){}}
+function savePrefs(){try{localStorage.setItem('ct_prefs',JSON.stringify(prefs))}catch(e){}}
 loadPrefs();
 
 // ── State ──────────────────────────────────────────────
-let S={members:{},tasks:{},filter:'all',tab:'tasks'};
-let swReg = null;
+let S={members:{},tasks:{},history:{},filter:'all',tab:'tasks'};
+let swReg=null;
+let midnightTimer=null;
+let countdownTimer=null;
 
 function ini(n){return(n||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)}
 function abg(id){const k=Object.keys(S.members);return ABG[k.indexOf(id)%ABG.length]||ABG[0]}
 function atxt(id){const k=Object.keys(S.members);return ATXT[k.indexOf(id)%ATXT.length]||ATXT[0]}
+function todayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function fmtDate(key){
+  const [y,m,d]=key.split('-');
+  const date=new Date(y,m-1,d);
+  const days=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  return days[date.getDay()]+' '+d+' '+months[m-1];
+}
+function msToMidnight(){
+  const now=new Date();
+  const midnight=new Date(now);
+  midnight.setHours(24,0,0,0);
+  return midnight-now;
+}
+function formatCountdown(ms){
+  const h=Math.floor(ms/3600000);
+  const m=Math.floor((ms%3600000)/60000);
+  const s=Math.floor((ms%60000)/1000);
+  return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
 
 function syncDot(s){
   const d=document.getElementById('dot'),l=document.getElementById('sync-lbl');
@@ -231,122 +266,146 @@ function syncDot(s){
   d.className='dot '+(s==='ok'?'ok':s==='sync'?'sync':'');
   l.textContent={ok:'Synchronisé ✓',sync:'Sync…',off:'Hors ligne ⚠️'}[s]||'';
 }
-function toast(msg,duration=2400){
+function toast(msg,dur=2400){
   const t=document.getElementById('toast');if(!t)return;
   t.textContent=msg;t.classList.add('show');
-  clearTimeout(t._tid);t._tid=setTimeout(()=>t.classList.remove('show'),duration);
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),dur);
 }
 
-// ── Service Worker + Notifications ────────────────────
+// ── Service worker ─────────────────────────────────────
 async function initSW(){
   if(!('serviceWorker' in navigator))return;
-  try{
-    swReg = await navigator.serviceWorker.register('./sw.js');
-    console.log('SW registered');
-  }catch(e){ console.warn('SW failed',e); }
+  try{swReg=await navigator.serviceWorker.register('./sw.js')}catch(e){}
 }
-
 async function requestNotifPermission(){
   if(!('Notification' in window))return false;
   if(Notification.permission==='granted')return true;
   if(Notification.permission==='denied')return false;
-  const result = await Notification.requestPermission();
-  return result==='granted';
+  return(await Notification.requestPermission())==='granted';
 }
-
-function sendLocalNotif(title, body, tag){
+function sendNotif(title,body,tag){
   if(!('Notification' in window)||Notification.permission!=='granted')return;
-  if(swReg){
-    swReg.active && navigator.serviceWorker.controller &&
-      navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',title,body,tag});
-  } else {
-    new Notification(title,{body,icon:'./icon-192.png',tag});
-  }
+  if(navigator.serviceWorker&&navigator.serviceWorker.controller){
+    navigator.serviceWorker.controller.postMessage({type:'SHOW_NOTIFICATION',title,body,tag});
+  } else { new Notification(title,{body,icon:'./icon-192.png',tag}); }
 }
 
-// ── Daily summary scheduler ────────────────────────────
-let dailyTimer = null;
-function scheduleDailySummary(){
-  if(dailyTimer){ clearTimeout(dailyTimer); dailyTimer=null; }
-  if(!prefs.notifEnabled||!prefs.notifDaily)return;
-  const [h,m] = (prefs.dailyTime||'08:00').split(':').map(Number);
-  const now = new Date();
-  const next = new Date();
-  next.setHours(h,m,0,0);
-  if(next<=now) next.setDate(next.getDate()+1);
-  const ms = next-now;
-  dailyTimer = setTimeout(()=>{
-    sendDailySummary();
-    scheduleDailySummary(); // reschedule for next day
-  }, ms);
+// ── Daily reset logic ──────────────────────────────────
+async function runDailyReset(){
+  const key=todayKey(); // this is actually yesterday at midnight trigger
+  // Save today's snapshot to history before resetting
+  await saveDayToHistory();
+  // Reset all tasks to not done
+  const updates={};
+  Object.entries(S.tasks).forEach(([id])=>{
+    updates['coloc/tasks/'+id+'/done']=false;
+    updates['coloc/tasks/'+id+'/assignedTo']=null;
+  });
+  // Reset daily pts for all members
+  Object.entries(S.members).forEach(([id])=>{
+    updates['coloc/members/'+id+'/dailyPts']=0;
+  });
+  if(Object.keys(updates).length) await db.ref().update(updates);
+  sendNotif('🌅 Nouveau jour !','Les tâches ont été remises à zéro. C\'est parti !','daily-reset');
+  toast('🌅 Nouveau jour ! Tâches remises à zéro.');
+  scheduleMidnightReset();
 }
 
-function sendDailySummary(){
-  const tasks = Object.values(S.tasks);
-  const total = tasks.length;
-  const done = tasks.filter(t=>t.done).length;
-  const urgent = tasks.filter(t=>!t.done && t.prio==='high').length;
-  let body = `${done}/${total} tâches complétées aujourd'hui.`;
-  if(urgent>0) body += ` ⚠️ ${urgent} tâche${urgent>1?'s':''} urgente${urgent>1?'s':''} en attente !`;
-  else body += ' 🎉 Aucune urgence !';
-  sendLocalNotif('📋 Résumé ColocTasks', body, 'daily-summary');
+async function saveDayToHistory(){
+  const key=todayKey();
+  const tasks=Object.values(S.tasks);
+  const doneTasks=tasks.filter(t=>t.done);
+  if(!doneTasks.length)return; // nothing to save
+  // Build per-member summary
+  const memberSummary={};
+  doneTasks.forEach(t=>{
+    if(!t.assignedTo)return;
+    if(!memberSummary[t.assignedTo]) memberSummary[t.assignedTo]={pts:0,tasks:[]};
+    memberSummary[t.assignedTo].pts+=t.pts;
+    memberSummary[t.assignedTo].tasks.push(t.name);
+  });
+  const totalDone=doneTasks.length;
+  const totalTasks=tasks.length;
+  await db.ref('coloc/history/'+key).set({
+    date:key,
+    totalDone,
+    totalTasks,
+    members:memberSummary,
+    savedAt:Date.now()
+  });
+  // Add daily pts to total pts
+  const ptUpdates={};
+  Object.entries(memberSummary).forEach(([id,s])=>{
+    const m=S.members[id];
+    if(m) ptUpdates['coloc/members/'+id+'/pts']=(m.pts||0)+s.pts;
+  });
+  if(Object.keys(ptUpdates).length) await db.ref().update(ptUpdates);
 }
 
-// ── Urgent reminder (check every 2h) ──────────────────
-function scheduleUrgentCheck(){
-  setInterval(()=>{
-    if(!prefs.notifEnabled||!prefs.notifUrgent)return;
-    const urgent = Object.values(S.tasks).filter(t=>!t.done&&t.prio==='high');
-    if(urgent.length>0){
-      sendLocalNotif(
-        '🔴 Tâches urgentes en attente !',
-        urgent.slice(0,3).map(t=>t.name).join(', ')+(urgent.length>3?' …':''),
-        'urgent-reminder'
-      );
+function scheduleMidnightReset(){
+  if(midnightTimer)clearTimeout(midnightTimer);
+  const ms=msToMidnight();
+  midnightTimer=setTimeout(()=>{ runDailyReset(); },ms);
+  // Also check if we missed a reset (app was closed at midnight)
+  checkMissedReset();
+}
+
+function checkMissedReset(){
+  // If lastResetDate in Firebase is not today, trigger reset
+  db.ref('coloc/meta/lastResetDate').once('value',snap=>{
+    const last=snap.val();
+    const today=todayKey();
+    if(last && last!==today){
+      // Missed one or more resets — run now
+      runDailyReset();
+    } else if(!last) {
+      db.ref('coloc/meta/lastResetDate').set(today);
     }
-  }, 2*60*60*1000); // every 2 hours
+  });
+}
+
+// Update lastResetDate whenever reset runs
+async function runDailyResetWithMeta(){
+  await db.ref('coloc/meta/lastResetDate').set(todayKey());
+  await runDailyReset();
+}
+
+// ── Countdown ticker ───────────────────────────────────
+function startCountdown(){
+  if(countdownTimer)clearInterval(countdownTimer);
+  countdownTimer=setInterval(()=>{
+    const el=document.getElementById('countdown-val');
+    if(el) el.textContent=formatCountdown(msToMidnight());
+  },1000);
 }
 
 // ── Firebase listener ──────────────────────────────────
 let first=true;
-let prevTasks={};
-let prevMembers={};
+let prevTasks={},prevMembers={};
 
-db.ref('coloc').on('value', snap=>{
+db.ref('coloc').on('value',snap=>{
   const d=snap.val()||{};
   const newTasks=d.tasks||{};
   const newMembers=d.members||{};
 
-  // Detect changes for notifications
-  if(!first && prefs.notifEnabled){
-    // Task assigned to me
-    if(prefs.notifAssigned && prefs.myMemberId){
+  // Notifications
+  if(!first&&prefs.notifEnabled){
+    if(prefs.notifAssigned&&prefs.myMemberId){
       Object.entries(newTasks).forEach(([id,t])=>{
         const old=prevTasks[id];
-        if(t.assignedTo===prefs.myMemberId && (!old||old.assignedTo!==prefs.myMemberId)){
-          const me=newMembers[prefs.myMemberId];
-          sendLocalNotif('📌 Nouvelle tâche assignée !', `"${t.name}" t'a été assignée.`, 'assigned-'+id);
+        if(t.assignedTo===prefs.myMemberId&&(!old||old.assignedTo!==prefs.myMemberId)){
+          sendNotif('📌 Nouvelle tâche assignée !','"'+t.name+'" t\'a été assignée.','assigned-'+id);
         }
       });
     }
-    // Co-loc completed a task
     if(prefs.notifCompleted){
       Object.entries(newTasks).forEach(([id,t])=>{
         const old=prevTasks[id];
-        if(t.done && old && !old.done && t.assignedTo && t.assignedTo!==prefs.myMemberId){
+        if(t.done&&old&&!old.done&&t.assignedTo&&t.assignedTo!==prefs.myMemberId){
           const who=newMembers[t.assignedTo];
-          if(who) sendLocalNotif('✅ Tâche complétée !', `${who.name} a fait : "${t.name}" (+${t.pts} pts)`, 'done-'+id);
+          if(who) sendNotif('✅ Tâche complétée !',who.name+' a fait : "'+t.name+'" (+'+t.pts+' pts)','done-'+id);
         }
       });
-    }
-    // Rank up
-    if(prefs.myMemberId){
-      const me=newMembers[prefs.myMemberId];
-      const oldMe=prevMembers[prefs.myMemberId];
-      if(me&&oldMe&&getRank(me.pts||0).name!==getRank(oldMe.pts||0).name){
-        const rank=getRank(me.pts||0);
-        sendLocalNotif('🎉 Nouveau rang !', `Tu atteins le rang ${rank.icon} ${rank.name} !`, 'rankup');
-      }
     }
   }
 
@@ -354,21 +413,19 @@ db.ref('coloc').on('value', snap=>{
   prevMembers=JSON.parse(JSON.stringify(newMembers));
   S.members=newMembers;
   S.tasks=newTasks;
+  S.history=d.history||{};
   syncDot('ok');
 
   if(first){
     first=false;
     document.getElementById('loading').style.display='none';
     document.getElementById('app').style.opacity='1';
-    // Show profile picker if no profile set
-    if(!prefs.myMemberId || !S.members[prefs.myMemberId]){
-      showProfilePicker();
-    }
-    scheduleDailySummary();
-    scheduleUrgentCheck();
+    if(!prefs.myMemberId||!S.members[prefs.myMemberId]) showProfilePicker();
+    scheduleMidnightReset();
+    startCountdown();
   }
   render();
-}, err=>{ console.error(err); syncDot('off'); document.getElementById('load-msg').textContent='Erreur: '+err.message; });
+},err=>{syncDot('off');document.getElementById('load-msg').textContent='Erreur: '+err.message});
 
 // ── Profile picker ────────────────────────────────────
 function showProfilePicker(){
@@ -382,27 +439,14 @@ function showProfilePicker(){
   }
   list.innerHTML=members.map(([id,m])=>{
     const rank=getRank(m.pts||0);
-    return `<button class="profile-btn${prefs.myMemberId===id?' selected':''}" onclick="selectProfile('${id}')">
-      <div class="av" style="background:${abg(id)};color:${atxt(id)}">${ini(m.name)}</div>
-      <div class="profile-btn-info">
-        <div class="profile-btn-name">${m.name}</div>
-        <div class="profile-btn-pts">${rank.icon} ${rank.name} · ${m.pts||0} pts</div>
-      </div>
-    </button>`;
+    return '<button class="profile-btn'+(prefs.myMemberId===id?' selected':'')+'" onclick="selectProfile(\''+id+'\')"><div class="av" style="background:'+abg(id)+';color:'+atxt(id)+'">'+ini(m.name)+'</div><div class="profile-btn-info"><div class="profile-btn-name">'+m.name+'</div><div class="profile-btn-pts">'+rank.icon+' '+rank.name+' · '+(m.pts||0)+' pts</div></div></button>';
   }).join('');
 }
-
 async function selectProfile(id){
-  prefs.myMemberId=id;
-  savePrefs();
+  prefs.myMemberId=id;savePrefs();
   document.getElementById('profile-overlay').style.display='none';
-  const granted=await requestNotifPermission();
-  if(granted){
-    toast('Notifications activées ! 🔔');
-    scheduleDailySummary();
-  } else {
-    toast('Profil enregistré (notifications refusées)');
-  }
+  const ok=await requestNotifPermission();
+  toast(ok?'Notifications activées ! 🔔':'Profil enregistré');
   render();
 }
 
@@ -422,12 +466,11 @@ function toggleTask(id){
   u['coloc/tasks/'+id+'/done']=!t.done;
   if(t.assignedTo&&S.members[t.assignedTo]){
     const m=S.members[t.assignedTo];
-    const prev=getRank(m.pts||0).name;
-    const np=t.done?Math.max(0,(m.pts||0)-t.pts):(m.pts||0)+t.pts;
-    u['coloc/members/'+t.assignedTo+'/pts']=np;
-    const cur=getRank(np).name;
-    if(!t.done&&cur!==prev)toast(getRank(np).icon+' '+m.name+' atteint '+cur+' !');
-    else if(!t.done)toast('+'+t.pts+' pts pour '+m.name+' !');
+    // Update daily pts
+    const prevDaily=m.dailyPts||0;
+    const newDaily=t.done?Math.max(0,prevDaily-t.pts):prevDaily+t.pts;
+    u['coloc/members/'+t.assignedTo+'/dailyPts']=newDaily;
+    if(!t.done) toast('+'+t.pts+' pts pour '+m.name+' aujourd\'hui !');
   }
   db.ref().update(u);
 }
@@ -436,7 +479,7 @@ function delTask(id){
   const t=S.tasks[id];
   if(t&&t.done&&t.assignedTo&&S.members[t.assignedTo]){
     const m=S.members[t.assignedTo];
-    db.ref('coloc/members/'+t.assignedTo+'/pts').set(Math.max(0,(m.pts||0)-t.pts));
+    db.ref('coloc/members/'+t.assignedTo+'/dailyPts').set(Math.max(0,(m.dailyPts||0)-t.pts));
   }
   db.ref('coloc/tasks/'+id).remove();
 }
@@ -447,13 +490,13 @@ function assignTask(taskId,val){
   const u={};
   if(t.done&&t.assignedTo&&S.members[t.assignedTo]){
     const old=S.members[t.assignedTo];
-    u['coloc/members/'+t.assignedTo+'/pts']=Math.max(0,(old.pts||0)-t.pts);
+    u['coloc/members/'+t.assignedTo+'/dailyPts']=Math.max(0,(old.dailyPts||0)-t.pts);
   }
   const na=val||null;
   u['coloc/tasks/'+taskId+'/assignedTo']=na;
   if(t.done&&na&&S.members[na]){
     const m=S.members[na];
-    u['coloc/members/'+na+'/pts']=(m.pts||0)+t.pts;
+    u['coloc/members/'+na+'/dailyPts']=(m.dailyPts||0)+t.pts;
   }
   db.ref().update(u);
 }
@@ -462,7 +505,7 @@ function addMember(){
   const inp=document.getElementById('mi');
   const name=inp.value.trim();if(!name)return;
   syncDot('sync');
-  db.ref('coloc/members').push({name,pts:0,joinedAt:Date.now()});
+  db.ref('coloc/members').push({name,pts:0,dailyPts:0,joinedAt:Date.now()});
   inp.value='';toast(name+' a rejoint la coloc ! 🎉');
 }
 
@@ -472,28 +515,16 @@ function delMember(id){
   Object.entries(S.tasks).forEach(([tid,t])=>{if(t.assignedTo===id)u['coloc/tasks/'+tid+'/assignedTo']=null;});
   if(Object.keys(u).length)db.ref().update(u);
   db.ref('coloc/members/'+id).remove();
-  if(prefs.myMemberId===id){ prefs.myMemberId=null; savePrefs(); }
+  if(prefs.myMemberId===id){prefs.myMemberId=null;savePrefs();}
 }
 
 function setFilter(f){S.filter=f;render()}
 function showTab(tab){
   S.tab=tab;
-  ['tasks','ranking','members','settings'].forEach(t=>document.getElementById('nav-'+t).classList.toggle('active',t===tab));
+  ['tasks','ranking','history','members','settings'].forEach(t=>document.getElementById('nav-'+t).classList.toggle('active',t===tab));
   render();
 }
-
-function togglePref(key){
-  prefs[key]=!prefs[key];
-  savePrefs();
-  if(key==='notifDaily'||key==='notifEnabled') scheduleDailySummary();
-  render();
-}
-
-function setDailyTime(val){
-  prefs.dailyTime=val;
-  savePrefs();
-  scheduleDailySummary();
-}
+function togglePref(key){prefs[key]=!prefs[key];savePrefs();render()}
 
 // ── Render ─────────────────────────────────────────────
 function render(){
@@ -504,26 +535,34 @@ function render(){
   const el=document.getElementById('content');if(!el)return;
   if(S.tab==='tasks')   el.innerHTML=renderTasks(done,total,pct);
   if(S.tab==='ranking') el.innerHTML=renderRanking();
+  if(S.tab==='history') el.innerHTML=renderHistory();
   if(S.tab==='members') el.innerHTML=renderMembers();
   if(S.tab==='settings')el.innerHTML=renderSettings();
+  if(S.tab==='tasks') startCountdown();
 }
 
 function renderTasks(done,total,pct){
-  const prog='<div class="prog-label"><span>Progression</span><b>'+pct+'%</b></div><div class="prog-bg"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
+  const prog='<div class="prog-label"><span>Aujourd\'hui</span><b>'+pct+'%</b></div><div class="prog-bg"><div class="prog-fill" style="width:'+pct+'%"></div></div>';
+
+  const banner='<div class="today-banner"><div style="flex:1"><div class="today-date">📅 '+fmtDate(todayKey())+'</div><div class="today-sub">Remise à zéro à minuit</div></div><div class="countdown"><span style="font-size:10px;color:var(--muted)">Remise à zéro dans</span><b id="countdown-val">--:--:--</b></div></div>';
+
   const form='<div class="card"><div class="add-form">'
     +'<input class="inp" id="ti" placeholder="Nouvelle tâche…" type="text" onkeydown="if(event.key===\'Enter\')addTask()"/>'
     +'<div class="add-row"><select class="inp sel" id="tc" style="flex:1"><option value="Cuisine">🍽 Cuisine</option><option value="Salle de bain">🚿 Salle de bain</option><option value="Salon">🛋 Salon</option><option value="Poubelles">🗑 Poubelles</option><option value="Courses">🛒 Courses</option><option value="Autre">📦 Autre</option></select>'
     +'<select class="inp sel" id="tp" style="flex:1"><option value="high">🔴 Urgent</option><option value="med">🟡 Normal</option><option value="low">🟢 Léger</option></select></div>'
     +'<div class="add-row"><select class="inp sel" id="tpts" style="flex:1"><option value="5">5 pts</option><option value="10" selected>10 pts</option><option value="20">20 pts</option><option value="30">30 pts</option></select>'
     +'<button class="btn" onclick="addTask()" style="flex:1">+ Ajouter</button></div></div></div>';
+
   const cats=['all','pending','done','Cuisine','Salle de bain','Poubelles','Salon','Courses'];
   const labels={all:'Tout',pending:'À faire',done:'Faites',Cuisine:'Cuisine','Salle de bain':'Salle de bain',Poubelles:'Poubelles',Salon:'Salon',Courses:'Courses'};
   const filters='<div class="filters">'+cats.map(c=>'<button class="fp'+(S.filter===c?' active':'')+'" onclick="setFilter(\''+c+'\')">'+labels[c]+'</button>').join('')+'</div>';
+
   let entries=Object.entries(S.tasks);
   if(S.filter==='pending')entries=entries.filter(([,t])=>!t.done);
   else if(S.filter==='done')entries=entries.filter(([,t])=>t.done);
   else if(S.filter!=='all')entries=entries.filter(([,t])=>t.cat===S.filter);
   entries.sort(([,a],[,b])=>(a.createdAt||0)-(b.createdAt||0));
+
   const taskHTML=entries.length?entries.map(([id,t])=>{
     const pc={high:'ch',med:'cm',low:'cl'}[t.prio]||'cm';
     const pl={high:'Urgent',med:'Normal',low:'Léger'}[t.prio]||'Normal';
@@ -536,18 +575,31 @@ function renderTasks(done,total,pct){
       +'<div class="tright"><button class="dbtn" onclick="delTask(\''+id+'\')">🗑</button>'
       +'<select class="asel" onchange="assignTask(\''+id+'\',this.value)">'+mopts+'</select></div></div>';
   }).join(''):'<div class="empty"><div class="ei">🎉</div>Aucune tâche ici !</div>';
-  return '<div class="card">'+prog+'</div>'+form+filters+'<div class="task-list">'+taskHTML+'</div>';
+
+  return banner+'<div class="card">'+prog+'</div>'+form+filters+'<div class="task-list">'+taskHTML+'</div>';
 }
 
 function renderRanking(){
-  const legend='<div class="rank-grid">'+RANKS.map((r,i)=>{
-    const next=RANKS[i+1];
-    return '<div class="rc" style="border-color:'+r.bar+'33"><div class="ri">'+r.icon+'</div><div class="rn" style="color:'+r.txt+'">'+r.name+'</div><div class="rr">'+r.min+(next?' – '+(next.min-1):'+')+'pts</div></div>';
-  }).join('')+'</div>';
+  const legend='<div class="rank-grid">'+RANKS.map((r,i)=>{const next=RANKS[i+1];return '<div class="rc" style="border-color:'+r.bar+'33"><div class="ri">'+r.icon+'</div><div class="rn" style="color:'+r.txt+'">'+r.name+'</div><div class="rr">'+r.min+(next?' – '+(next.min-1):'+')+'pts</div></div>';}).join('')+'</div>';
+
   const members=Object.entries(S.members).sort(([,a],[,b])=>(b.pts||0)-(a.pts||0));
   const maxPts=Math.max(...members.map(([,m])=>m.pts||0),1);
   const medals=['🥇','🥈','🥉'];
   if(!members.length)return legend+'<div class="card"><div class="empty"><div class="ei">👥</div>Ajoute des membres !</div></div>';
+
+  // Today's mini leaderboard
+  const todayMembers=[...members].sort(([,a],[,b])=>(b.dailyPts||0)-(a.dailyPts||0));
+  const todayHTML='<div class="card"><div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">🌟 Score du jour</div>'
+    +todayMembers.map(([id,m],i)=>{
+      const dp=m.dailyPts||0;
+      const maxD=Math.max(...todayMembers.map(([,x])=>x.dailyPts||0),1);
+      const pct=Math.round(dp/maxD*100);
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)"'+(i===todayMembers.length-1?' style="border-bottom:none"':'')+'>'
+        +'<div class="av" style="background:'+abg(id)+';color:'+atxt(id)+';width:34px;height:34px;font-size:12px">'+ini(m.name)+'</div>'
+        +'<div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:13px;font-weight:500;margin-bottom:4px"><span>'+m.name+(id===prefs.myMemberId?' 👤':'')+'</span><span style="color:var(--accent);font-weight:700">+'+dp+' pts</span></div>'
+        +'<div style="height:4px;background:var(--bg3);border-radius:99px;overflow:hidden"><div style="height:4px;width:'+pct+'%;background:var(--accent);border-radius:99px"></div></div></div></div>';
+    }).join('')+'</div>';
+
   const lbHTML=members.map(([id,m],i)=>{
     const rank=getRank(m.pts||0);const next=getNext(m.pts||0);
     const pct=Math.round((m.pts||0)/maxPts*100);
@@ -556,15 +608,47 @@ function renderRanking(){
       +'<div class="av" style="background:'+abg(id)+';color:'+atxt(id)+'">'+ini(m.name)+'</div>'
       +'<div class="lbinfo"><div class="lbnr"><span class="lbn">'+m.name+(id===prefs.myMemberId?' 👤':'')+'</span><span class="rbadge" style="background:'+rank.bg+';color:'+rank.txt+'">'+rank.icon+' '+rank.name+'</span></div>'
       +'<div class="lbbb"><div class="lbb" style="width:'+pct+'%;background:'+rank.bar+'"></div></div>'
-      +'<div class="lbs"><span>'+nextTxt+'</span><span class="lbpts">'+(m.pts||0)+' pts</span></div></div></div>';
+      +'<div class="lbs"><span>'+nextTxt+'</span><span class="lbpts">'+(m.pts||0)+' pts total</span></div></div></div>';
   }).join('<div class="div"></div>');
-  return legend+'<div class="card"><div class="lb-list">'+lbHTML+'</div></div>';
+
+  return legend+todayHTML+'<div class="card"><div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">🏆 Classement général</div><div class="lb-list">'+lbHTML+'</div></div>';
+}
+
+function renderHistory(){
+  const entries=Object.entries(S.history).sort(([a],[b])=>b.localeCompare(a)); // newest first
+  if(!entries.length) return '<div class="card"><div class="empty"><div class="ei">📅</div>Aucun historique pour l\'instant.<br><span style="font-size:12px">L\'historique se remplit à minuit !</span></div></div>';
+
+  const days=['Dom','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+
+  return entries.map(([key,day])=>{
+    const [y,mo,d]=key.split('-');
+    const date=new Date(y,mo-1,d);
+    const label=days[date.getDay()]+' '+d+' '+months[mo-1]+' '+y;
+    const pct=day.totalTasks?Math.round(day.totalDone/day.totalTasks*100):0;
+    const emoji=pct===100?'🌟':pct>=50?'👍':'😅';
+
+    const memberRows=day.members?Object.entries(day.members).map(([mid,ms])=>{
+      const m=S.members[mid];
+      const name=m?m.name:('Membre supprimé');
+      const id=m?mid:mid;
+      const taskList=(ms.tasks||[]).map(t=>'<div class="day-task-item">'+t+'</div>').join('');
+      return '<div class="day-member-row">'
+        +'<div class="day-av" style="background:'+(m?abg(id):'#333')+';color:'+(m?atxt(id):'#aaa')+'">'+ini(name)+'</div>'
+        +'<div class="day-member-info"><div class="day-member-name"><span>'+name+'</span><span class="day-pts-badge">+'+ms.pts+' pts</span></div>'
+        +'<div class="day-task-list">'+taskList+'</div></div></div>';
+    }).join(''):'<div style="font-size:12px;color:var(--muted);padding:10px 0">Aucune tâche assignée ce jour.</div>';
+
+    return '<div class="day-card">'
+      +'<div class="day-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display===\'none\'?\'block\':\'none\'">'
+      +'<div><div class="day-title">'+label+'</div><div class="day-sub">'+day.totalDone+'/'+day.totalTasks+' tâches · '+pct+'% accompli</div></div>'
+      +'<span class="day-badge">'+emoji+'</span></div>'
+      +'<div class="day-body" style="display:none">'+memberRows+'</div></div>';
+  }).join('');
 }
 
 function renderMembers(){
-  const form='<div class="card"><div class="add-form"><div class="add-row">'
-    +'<input class="inp" id="mi" placeholder="Prénom du colocataire…" type="text" onkeydown="if(event.key===\'Enter\')addMember()"/>'
-    +'<button class="btn" onclick="addMember()">+ Ajouter</button></div></div></div>';
+  const form='<div class="card"><div class="add-form"><div class="add-row"><input class="inp" id="mi" placeholder="Prénom du colocataire…" type="text" onkeydown="if(event.key===\'Enter\')addMember()"/><button class="btn" onclick="addMember()">+ Ajouter</button></div></div></div>';
   const members=Object.entries(S.members);
   if(!members.length)return form+'<div class="card"><div class="empty"><div class="ei">🏠</div>Aucun membre encore.</div></div>';
   const list=members.map(([id,m],i)=>{
@@ -574,7 +658,7 @@ function renderMembers(){
     return '<div class="card"><div class="mcard">'
       +'<div class="av" style="background:'+abg(id)+';color:'+atxt(id)+';width:48px;height:48px;font-size:16px">'+ini(m.name)+'</div>'
       +'<div class="minfo"><div class="mname">'+m.name+(id===prefs.myMemberId?' 👤':'')+'</div>'
-      +'<div class="msub">'+td+'/'+tt+' tâches · '+(m.pts||0)+' pts</div>'
+      +'<div class="msub">Aujourd\'hui : '+(m.dailyPts||0)+' pts · Total : '+(m.pts||0)+' pts</div>'
       +'<span class="rbadge" style="background:'+rank.bg+';color:'+rank.txt+';margin-top:4px;display:inline-block">'+rank.icon+' '+rank.name+'</span></div>'
       +'<button class="dbtn" style="font-size:20px" onclick="delMember(\''+id+'\')">🗑</button></div></div>';
   }).join('');
@@ -583,69 +667,39 @@ function renderMembers(){
 
 function renderSettings(){
   const me=prefs.myMemberId?S.members[prefs.myMemberId]:null;
-  const notifGranted='Notification' in window && Notification.permission==='granted';
-  const notifDenied='Notification' in window && Notification.permission==='denied';
-
+  const notifGranted='Notification' in window&&Notification.permission==='granted';
+  const notifDenied='Notification' in window&&Notification.permission==='denied';
   const profileSection=me
-    ?`<div class="card">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Mon profil</div>
-        <div class="my-profile-card">
-          <div class="av" style="background:${abg(prefs.myMemberId)};color:${atxt(prefs.myMemberId)};width:44px;height:44px;font-size:15px">${ini(me.name)}</div>
-          <div style="flex:1"><div class="mname">${me.name}</div><div class="msub">${getRank(me.pts||0).icon} ${getRank(me.pts||0).name} · ${me.pts||0} pts</div></div>
-          <button class="change-btn" onclick="showProfilePicker()">Changer</button>
-        </div>
-      </div>`
-    :`<div class="card" style="text-align:center;padding:20px">
-        <div style="font-size:28px;margin-bottom:8px">👤</div>
-        <div style="font-size:14px;font-weight:500;margin-bottom:4px">Aucun profil sélectionné</div>
-        <div style="font-size:12px;color:var(--muted);margin-bottom:14px">Choisis ton profil pour recevoir les notifications</div>
-        <button class="btn" onclick="showProfilePicker()">Choisir mon profil</button>
-      </div>`;
-
+    ?'<div class="card"><div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Mon profil</div><div class="my-profile-card"><div class="av" style="background:'+abg(prefs.myMemberId)+';color:'+atxt(prefs.myMemberId)+';width:44px;height:44px;font-size:15px">'+ini(me.name)+'</div><div style="flex:1"><div class="mname">'+me.name+'</div><div class="msub">'+getRank(me.pts||0).icon+' '+getRank(me.pts||0).name+' · '+(me.pts||0)+' pts</div></div><button class="change-btn" onclick="showProfilePicker()">Changer</button></div></div>'
+    :'<div class="card" style="text-align:center;padding:20px"><div style="font-size:28px;margin-bottom:8px">👤</div><div style="font-size:14px;font-weight:500;margin-bottom:14px">Aucun profil sélectionné</div><button class="btn" onclick="showProfilePicker()">Choisir mon profil</button></div>';
   const notifStatus=notifDenied
-    ?'<div style="background:rgba(240,74,74,.12);border:1px solid rgba(240,74,74,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:#F08A8A;margin-bottom:12px">⚠️ Notifications bloquées dans les réglages de ton navigateur. Active-les manuellement.</div>'
+    ?'<div style="background:rgba(240,74,74,.12);border:1px solid rgba(240,74,74,.3);border-radius:10px;padding:10px 12px;font-size:12px;color:#F08A8A;margin-bottom:12px">⚠️ Notifications bloquées dans les réglages.</div>'
     :notifGranted
     ?'<div style="background:rgba(74,240,180,.1);border:1px solid rgba(74,240,180,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--accent2);margin-bottom:12px">🔔 Notifications activées ✓</div>'
-    :`<div style="background:rgba(200,240,74,.08);border:1px solid rgba(200,240,74,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--accent);margin-bottom:12px;cursor:pointer" onclick="requestAndEnable()">💡 Appuie ici pour activer les notifications →</div>`;
-
-  const toggle=(key,label,sub)=>`<div class="notif-row">
-    <div><div class="notif-label">${label}</div><div class="notif-sub">${sub}</div></div>
-    <label class="toggle"><input type="checkbox" ${prefs[key]?'checked':''} onchange="togglePref('${key}')"/><div class="toggle-track"></div></label>
-  </div>`;
-
+    :'<div style="background:rgba(200,240,74,.08);border:1px solid rgba(200,240,74,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--accent);margin-bottom:12px;cursor:pointer" onclick="requestAndEnable()">💡 Appuie ici pour activer les notifications →</div>';
+  const toggle=(key,label,sub)=>'<div class="notif-row"><div><div class="notif-label">'+label+'</div><div class="notif-sub">'+sub+'</div></div><label class="toggle"><input type="checkbox" '+(prefs[key]?'checked':'')+' onchange="togglePref(\''+key+'\')"/><div class="toggle-track"></div></label></div>';
   return profileSection
-    +`<div class="card">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Notifications</div>
-        ${notifStatus}
-        ${toggle('notifEnabled','Activer les notifications','Maître interrupteur de toutes les notifs')}
-        ${toggle('notifAssigned','Tâche assignée','Quand quelqu\'un t\'assigne une tâche')}
-        ${toggle('notifCompleted','Tâche complétée','Quand un co-loc finit une tâche')}
-        ${toggle('notifUrgent','Rappel urgences','Rappel toutes les 2h si des tâches urgentes attendent')}
-        ${toggle('notifDaily','Résumé quotidien','Récapitulatif de l\'état des tâches')}
-        <div class="notif-time-row">
-          <label>Heure du résumé quotidien</label>
-          <input class="time-inp" type="time" value="${prefs.dailyTime||'08:00'}" onchange="setDailyTime(this.value)"/>
-        </div>
-      </div>
-      <div class="card" style="text-align:center">
-        <button class="btn btn-ghost" onclick="testNotif()" style="width:100%">🔔 Tester une notification</button>
-      </div>`;
+    +'<div class="card"><div style="font-size:11px;color:var(--muted);margin-bottom:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px">Notifications</div>'
+    +notifStatus
+    +toggle('notifEnabled','Activer les notifications','Maître interrupteur')
+    +toggle('notifAssigned','Tâche assignée','Quand quelqu\'un t\'assigne une tâche')
+    +toggle('notifCompleted','Tâche complétée','Quand un co-loc finit une tâche')
+    +toggle('notifUrgent','Rappel urgences','Rappel toutes les 2h')
+    +toggle('notifDaily','Résumé quotidien','Récap de l\'état des tâches')
+    +'</div>'
+    +'<div class="card" style="text-align:center"><button class="btn btn-ghost" onclick="testNotif()" style="width:100%">🔔 Tester une notification</button></div>';
 }
 
 async function requestAndEnable(){
   const ok=await requestNotifPermission();
-  if(ok){ toast('Notifications activées ! 🔔'); scheduleDailySummary(); }
-  else toast('Notifications refusées :(');
-  render();
+  toast(ok?'Notifications activées ! 🔔':'Notifications refusées :(');render();
 }
-
 function testNotif(){
-  if(Notification.permission!=='granted'){ toast('Active les notifications d\'abord !'); return; }
-  sendLocalNotif('🔔 Test ColocTasks', 'Les notifications fonctionnent correctement !', 'test-notif');
+  if(Notification.permission!=='granted'){toast('Active les notifications d\'abord !');return;}
+  sendNotif('🔔 Test ColocTasks','Les notifications fonctionnent !','test');
   toast('Notification envoyée !');
 }
 
-// Init
 initSW();
 </script>
 </body>
